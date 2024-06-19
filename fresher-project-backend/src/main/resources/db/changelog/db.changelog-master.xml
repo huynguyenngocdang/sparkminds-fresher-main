@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <include file="classpath:db/changelog/20240619080000_create_user.xml"/>
+    <include file="classpath:db/changelog/20240619090000_create_product.xml"/>
+    <include file="classpath:db/changelog/20240619100000_insert_user.xml"/>
+    <include file="classpath:db/changelog/20240619110000_insert_product.xml"/>
+</databaseChangeLog>

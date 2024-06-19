@@ -19,11 +19,11 @@ public class FresherProjectBackendApplication {
 		SpringApplication.run(FresherProjectBackendApplication.class, args);
 	}
 
-	@Bean
-	CommandLineRunner run(DatabasePropertiesService dbService) {
-		return args -> {
-			dbService.printDatabaseProperties();
-		};
-	}
+//	@Bean
+//	CommandLineRunner run(DatabasePropertiesService dbService) {
+//		return args -> {
+//			dbService.printDatabaseProperties();
+//		};
+//	}
 
 }
