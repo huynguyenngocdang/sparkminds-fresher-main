@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
                 CommonValidationConstant.CONSTRAINT_EXCEPTION,
                 HttpStatus.BAD_REQUEST,
                 errors,
-                CommonValidationConstant.VALIDATION_EXCEPTION
+                CommonValidationConstant.CONSTRAINT_EXCEPTION
         );
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }

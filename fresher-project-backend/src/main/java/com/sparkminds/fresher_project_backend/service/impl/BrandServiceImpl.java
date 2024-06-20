@@ -35,10 +35,10 @@ public class BrandServiceImpl implements BrandService {
                     .build();
             brandRepository.save(brand);
             return responsePayloadUtility.buildResponse(
-                    BrandConstant.CREATE_SUCCESSFUL,
+                    BrandConstant.CREATE_BRAND_SUCCESSFUL,
                     HttpStatus.CREATED,
                     null,
-                    BrandConstant.CREATE_SUCCESSFUL
+                    null
             );
 
         } catch (Exception e) {
