@@ -18,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -39,8 +41,8 @@ public class UserServiceImpl implements UserService {
                 );
             }
 
-            Role defaultRole = roleRepository.findDefaultRole(RoleConstant.ROLE_USER);
-            if (defaultRole == null) {
+            Optional<Role> defaultRoleOpt = roleRepository.findDefaultRole(RoleConstant.ROLE_USER);
+            if (defaultRoleOpt.isEmpty()) {
                 return responsePayloadUtility.buildResponse(
                         "Default role not found",
                         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -71,6 +73,7 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
 
             // Create UserRole entity
+            Role defaultRole = defaultRoleOpt.get();
             UserRole userRole = UserRole.builder()
                     .user(user)
                     .role(defaultRole)

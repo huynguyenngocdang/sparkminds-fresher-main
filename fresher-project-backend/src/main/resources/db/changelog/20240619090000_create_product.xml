@@ -43,38 +43,8 @@
         </createTable>
     </changeSet>
 
+
     <changeSet id="3" author="huynnd">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="category_brand"/>
-            </not>
-        </preConditions>
-        <createTable tableName="category_brand">
-            <column name="id" type="BIGINT" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="FK_CATEGORY_ID" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="FK_BRAND_ID" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <addForeignKeyConstraint baseTableName="category_brand"
-                                 baseColumnNames="FK_CATEGORY_ID"
-                                 constraintName="FK_category_brand_category"
-                                 referencedTableName="category"
-                                 referencedColumnNames="id" />
-
-        <addForeignKeyConstraint baseTableName="category_brand"
-                                 baseColumnNames="FK_BRAND_ID"
-                                 constraintName="FK_category_brand_brand"
-                                 referencedTableName="brand"
-                                 referencedColumnNames="id" />
-    </changeSet>
-
-    <changeSet id="4" author="huynnd">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="product"/>

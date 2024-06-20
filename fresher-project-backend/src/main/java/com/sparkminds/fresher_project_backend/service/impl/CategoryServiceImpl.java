@@ -12,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-
 @Service
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
@@ -34,7 +32,6 @@ public class CategoryServiceImpl implements CategoryService {
 
             Category category = Category.builder()
                     .categoryName(request.getName())
-                    .categoryBrands(new ArrayList<>())
                     .isDelete(false)
                     .build();
 

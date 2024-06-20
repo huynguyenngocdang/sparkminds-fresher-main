@@ -1,6 +1,6 @@
 package com.sparkminds.fresher_project_backend.dto.request;
 
-import com.sparkminds.fresher_project_backend.constant.CategoryValidationConstant;
+import com.sparkminds.fresher_project_backend.constant.BrandValidationConstant;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateCategoryRequest {
-    @NotBlank(message = CategoryValidationConstant.CATEGORY_NOT_BLANK)
-    @NotNull(message = CategoryValidationConstant.CATEGORY_NOT_EMPTY)
+public class CreateBrandRequest {
+    @NotBlank(message = BrandValidationConstant.BRAND_NOT_BLANK)
+    @NotNull(message = BrandValidationConstant.BRAND_NOT_EMPTY)
     private String name;
 }

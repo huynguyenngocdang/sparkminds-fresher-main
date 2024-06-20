@@ -5,13 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ResponsePayloadUtility {
-    public ResponsePayload buildResponse(String message, HttpStatus status, Object data, String error){
-        return ResponsePayload.builder()
-                .message(message)
-                .status(status)
-                .data(data)
-                .error(error)
-                .build();
-    }
+public interface ResponsePayloadUtility {
+     ResponsePayload buildResponse(String message, HttpStatus status, Object data, String error);
+
 }

@@ -42,7 +42,9 @@
             </column>
             <column name="age" type="INT"/>
             <column name="gender" type="VARCHAR(10)"/>
-            <column name="is_delete" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="is_delete" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
             <column name="FK_USER_ID" type="BIGINT"/>
         </createTable>
         <addForeignKeyConstraint

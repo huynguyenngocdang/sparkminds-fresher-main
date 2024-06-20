@@ -27,5 +27,5 @@ public class Category {
     private boolean isDelete;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    private List<CategoryBrand> categoryBrands = new ArrayList<>();
+    private List<Product> products = new ArrayList<>();
 }

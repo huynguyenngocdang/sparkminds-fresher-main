@@ -1,5 +1,6 @@
 package com.sparkminds.fresher_project_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -31,5 +32,6 @@ public class UserProfile {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_USER_ID", referencedColumnName = "id")
+    @JsonBackReference
     private User user;
 }
