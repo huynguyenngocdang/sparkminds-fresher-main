@@ -91,7 +91,7 @@ public class CreateUserServiceImpl implements CreateUserService {
         } catch (Exception e) {
             return responsePayloadUtility.buildResponse(
                     UserConstant.CREATE_USER_FAIL,
-                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    HttpStatus.BAD_REQUEST,
                     null,
                     UserConstant.CREATE_USER_FAIL
             );

@@ -43,8 +43,8 @@ public class CreateBrandServiceImpl implements CreateBrandService {
 
         } catch (Exception e) {
             return responsePayloadUtility.buildResponse(
-                    BrandConstant.CREATE_BRAND_FAIL,
-                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST,
                     null,
                     BrandConstant.CREATE_BRAND_FAIL
             );

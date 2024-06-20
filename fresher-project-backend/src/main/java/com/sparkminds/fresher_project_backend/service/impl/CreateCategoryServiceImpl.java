@@ -45,8 +45,8 @@ public class CreateCategoryServiceImpl implements CreateCategoryService {
             );
         } catch (Exception e) {
             return responsePayloadUtility.buildResponse(
-                    CategoryConstant.CREATE_CATEGORY_FAIL,
-                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST,
                     null,
                     CategoryConstant.CREATE_CATEGORY_FAIL
             );

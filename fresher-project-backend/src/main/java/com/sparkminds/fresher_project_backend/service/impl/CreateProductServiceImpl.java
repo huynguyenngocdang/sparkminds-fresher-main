@@ -71,7 +71,7 @@ public class CreateProductServiceImpl implements CreateProductService {
         } catch (Exception e) {
             return responsePayloadUtility.buildResponse(
                     ProductConstant.CREATE_PRODUCT_FAIL,
-                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    HttpStatus.BAD_REQUEST,
                     null,
                     ProductConstant.CREATE_PRODUCT_FAIL
             );
