@@ -1,6 +1,5 @@
 package com.sparkminds.fresher_project_backend.dto.request;
 
-import com.sparkminds.fresher_project_backend.constant.CommonConstant;
 import com.sparkminds.fresher_project_backend.constant.CommonValidationConstant;
 import com.sparkminds.fresher_project_backend.constant.UserValidationConstant;
 import jakarta.validation.constraints.Min;
@@ -15,15 +14,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateUserRequest {
-
+public class UpdateUserProfileRequest {
     @NotBlank(message = UserValidationConstant.USERNAME_NOT_BLANK)
     @NotNull(message = UserValidationConstant.USERNAME_NOT_EMPTY)
     private String username;
-
-    @NotBlank(message = UserValidationConstant.PASSWORD_NOT_BLANK)
-    @NotNull(message = UserValidationConstant.PASSWORD_NOT_EMPTY)
-    private String password;
 
     @NotNull(message = UserValidationConstant.USER_FULL_NAME_NOT_EMPTY)
     private String fullName;
@@ -34,4 +28,5 @@ public class CreateUserRequest {
 
     @NotNull(message = UserValidationConstant.USER_GENDER_NOT_EMPTY)
     private String gender;
+
 }

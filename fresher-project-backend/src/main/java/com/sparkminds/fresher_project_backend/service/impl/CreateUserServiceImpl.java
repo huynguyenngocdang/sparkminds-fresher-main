@@ -11,7 +11,7 @@ import com.sparkminds.fresher_project_backend.payload.ResponsePayload;
 import com.sparkminds.fresher_project_backend.repository.RoleRepository;
 import com.sparkminds.fresher_project_backend.repository.UserRepository;
 import com.sparkminds.fresher_project_backend.repository.UserRoleRepository;
-import com.sparkminds.fresher_project_backend.service.UserService;
+import com.sparkminds.fresher_project_backend.service.CreateUserService;
 import com.sparkminds.fresher_project_backend.utility.ResponsePayloadUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,7 +22,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class CreateUserServiceImpl implements CreateUserService {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
     private final RoleRepository roleRepository;

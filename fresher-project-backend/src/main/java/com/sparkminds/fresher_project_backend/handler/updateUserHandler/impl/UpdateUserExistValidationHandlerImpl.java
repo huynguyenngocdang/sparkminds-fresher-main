@@ -1,9 +1,9 @@
-package com.sparkminds.fresher_project_backend.handler.createProductHandler.impl;
+package com.sparkminds.fresher_project_backend.handler.updateUserHandler.impl;
 
 import com.sparkminds.fresher_project_backend.constant.HandlerCommonConstant;
 import com.sparkminds.fresher_project_backend.constant.UserConstant;
-import com.sparkminds.fresher_project_backend.dto.request.CreateProductRequest;
-import com.sparkminds.fresher_project_backend.handler.createProductHandler.CreateProductHandler;
+import com.sparkminds.fresher_project_backend.dto.request.UpdateUserRequest;
+import com.sparkminds.fresher_project_backend.handler.updateUserHandler.UpdateUserHandler;
 import com.sparkminds.fresher_project_backend.payload.ResponsePayload;
 import com.sparkminds.fresher_project_backend.repository.UserRepository;
 import com.sparkminds.fresher_project_backend.utility.ResponsePayloadUtility;
@@ -13,17 +13,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserExistValidationHandler implements CreateProductHandler {
+public class UpdateUserExistValidationHandlerImpl implements UpdateUserHandler {
     private final UserRepository userRepository;
     private final ResponsePayloadUtility responsePayloadUtility;
-    private CreateProductHandler nextHandler;
+    private UpdateUserHandler nextHandler;
     @Override
-    public void setNextHandler(CreateProductHandler handler) {
+    public void setNextHandler(UpdateUserHandler handler) {
         this.nextHandler = handler;
     }
 
     @Override
-    public ResponsePayload handle(CreateProductRequest request) {
+    public ResponsePayload handle(UpdateUserRequest request) {
         if(!userRepository.existsByUsername(request.getUsername())) {
             return responsePayloadUtility.buildResponse(
                     UserConstant.INVALID_USER_NOT_EXIST,
@@ -32,7 +32,7 @@ public class UserExistValidationHandler implements CreateProductHandler {
                     UserConstant.INVALID_USER_NOT_EXIST
             );
         }
-        if(nextHandler!= null) {
+        if(nextHandler != null) {
             return nextHandler.handle(request);
         }
 

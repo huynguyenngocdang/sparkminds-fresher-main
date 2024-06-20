@@ -5,7 +5,7 @@ import com.sparkminds.fresher_project_backend.dto.request.CreateBrandRequest;
 import com.sparkminds.fresher_project_backend.entity.Brand;
 import com.sparkminds.fresher_project_backend.payload.ResponsePayload;
 import com.sparkminds.fresher_project_backend.repository.BrandRepository;
-import com.sparkminds.fresher_project_backend.service.BrandService;
+import com.sparkminds.fresher_project_backend.service.CreateBrandService;
 import com.sparkminds.fresher_project_backend.utility.ResponsePayloadUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class BrandServiceImpl implements BrandService {
+public class CreateBrandServiceImpl implements CreateBrandService {
     private final BrandRepository brandRepository;
     private final ResponsePayloadUtility responsePayloadUtility;
 

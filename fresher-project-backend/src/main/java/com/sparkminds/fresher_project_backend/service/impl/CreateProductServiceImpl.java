@@ -7,16 +7,16 @@ import com.sparkminds.fresher_project_backend.constant.UserConstant;
 import com.sparkminds.fresher_project_backend.dto.request.CreateProductRequest;
 import com.sparkminds.fresher_project_backend.entity.Product;
 import com.sparkminds.fresher_project_backend.exception.ResourceNotFoundException;
-import com.sparkminds.fresher_project_backend.handler.createProductHandler.impl.BrandExistValidationHandler;
-import com.sparkminds.fresher_project_backend.handler.createProductHandler.impl.CategoryExistValidationHandler;
-import com.sparkminds.fresher_project_backend.handler.createProductHandler.impl.ProductExistValidationHandler;
-import com.sparkminds.fresher_project_backend.handler.createProductHandler.impl.UserExistValidationHandler;
+import com.sparkminds.fresher_project_backend.handler.createProductHandler.impl.CreateProductBrandExistValidationHandlerImpl;
+import com.sparkminds.fresher_project_backend.handler.createProductHandler.impl.CreateProductCategoryExistValidationHandlerImpl;
+import com.sparkminds.fresher_project_backend.handler.createProductHandler.impl.CreateProductProductExistValidationHandlerImpl;
+import com.sparkminds.fresher_project_backend.handler.createProductHandler.impl.CreateProductUserExistValidationHandlerImpl;
 import com.sparkminds.fresher_project_backend.payload.ResponsePayload;
 import com.sparkminds.fresher_project_backend.repository.BrandRepository;
 import com.sparkminds.fresher_project_backend.repository.CategoryRepository;
 import com.sparkminds.fresher_project_backend.repository.ProductRepository;
 import com.sparkminds.fresher_project_backend.repository.UserRepository;
-import com.sparkminds.fresher_project_backend.service.ProductService;
+import com.sparkminds.fresher_project_backend.service.CreateProductService;
 import com.sparkminds.fresher_project_backend.utility.ResponsePayloadUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,27 +25,27 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class ProductServiceImpl implements ProductService {
+public class CreateProductServiceImpl implements CreateProductService {
     private final ProductRepository productRepository;
     private final BrandRepository brandRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final ResponsePayloadUtility responsePayloadUtility;
 
-    private final BrandExistValidationHandler brandExistValidationHandler;
-    private final CategoryExistValidationHandler categoryExistValidationHandler;
-    private final ProductExistValidationHandler productExistValidationHandler;
-    private final UserExistValidationHandler userExistValidationHandler;
+    private final CreateProductBrandExistValidationHandlerImpl createProductBrandExistValidationHandlerImpl;
+    private final CreateProductCategoryExistValidationHandlerImpl createProductCategoryExistValidationHandlerImpl;
+    private final CreateProductProductExistValidationHandlerImpl createProductProductExistValidationHandlerImpl;
+    private final CreateProductUserExistValidationHandlerImpl createProductUserExistValidationHandlerImpl;
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResponsePayload createNewProduct(CreateProductRequest request) {
         try {
-            userExistValidationHandler.setNextHandler(brandExistValidationHandler);
-            brandExistValidationHandler.setNextHandler(categoryExistValidationHandler);
-            categoryExistValidationHandler.setNextHandler(productExistValidationHandler);
-            productExistValidationHandler.setNextHandler(null);
+            createProductUserExistValidationHandlerImpl.setNextHandler(createProductBrandExistValidationHandlerImpl);
+            createProductBrandExistValidationHandlerImpl.setNextHandler(createProductCategoryExistValidationHandlerImpl);
+            createProductCategoryExistValidationHandlerImpl.setNextHandler(createProductProductExistValidationHandlerImpl);
+            createProductProductExistValidationHandlerImpl.setNextHandler(null);
 
-            ResponsePayload responsePayload = userExistValidationHandler.handle(request);
+            ResponsePayload responsePayload = createProductUserExistValidationHandlerImpl.handle(request);
             if(!responsePayload.getStatus().is2xxSuccessful()) {
                 return responsePayload;
             }

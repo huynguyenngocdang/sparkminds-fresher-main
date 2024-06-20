@@ -2,7 +2,7 @@ package com.sparkminds.fresher_project_backend.controller;
 
 import com.sparkminds.fresher_project_backend.dto.request.CreateCategoryRequest;
 import com.sparkminds.fresher_project_backend.payload.ResponsePayload;
-import com.sparkminds.fresher_project_backend.service.CategoryService;
+import com.sparkminds.fresher_project_backend.service.CreateCategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/categories")
 public class CategoryController {
-    private final CategoryService categoryService;
+    private final CreateCategoryService createCategoryService;
     @PostMapping("/create")
     public ResponseEntity<ResponsePayload> createCategory(@RequestBody @Valid CreateCategoryRequest request) {
-        ResponsePayload responsePayload = categoryService.createCategory(request);
+        ResponsePayload responsePayload = createCategoryService.createCategory(request);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
 }

@@ -5,7 +5,7 @@ import com.sparkminds.fresher_project_backend.dto.request.CreateCategoryRequest;
 import com.sparkminds.fresher_project_backend.entity.Category;
 import com.sparkminds.fresher_project_backend.payload.ResponsePayload;
 import com.sparkminds.fresher_project_backend.repository.CategoryRepository;
-import com.sparkminds.fresher_project_backend.service.CategoryService;
+import com.sparkminds.fresher_project_backend.service.CreateCategoryService;
 import com.sparkminds.fresher_project_backend.utility.ResponsePayloadUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class CategoryServiceImpl implements CategoryService {
+public class CreateCategoryServiceImpl implements CreateCategoryService {
     private final ResponsePayloadUtility responsePayloadUtility;
     private final CategoryRepository categoryRepository;
     @Override
