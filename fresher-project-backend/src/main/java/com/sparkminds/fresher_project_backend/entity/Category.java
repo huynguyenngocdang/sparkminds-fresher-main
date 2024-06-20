@@ -1,5 +1,6 @@
 package com.sparkminds.fresher_project_backend.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -26,6 +27,6 @@ public class Category {
     private String categoryName;
     private boolean isDelete;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Product> products = new ArrayList<>();
 }

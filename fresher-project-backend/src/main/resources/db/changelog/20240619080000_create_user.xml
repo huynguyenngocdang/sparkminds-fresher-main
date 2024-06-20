@@ -90,6 +90,9 @@
             <column name="FK_ROLE_ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
+            <column name="is_delete" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
         <addForeignKeyConstraint baseTableName="user_role"

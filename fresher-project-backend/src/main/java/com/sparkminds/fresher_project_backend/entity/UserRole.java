@@ -26,6 +26,7 @@ public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Boolean isDelete;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_USER_ID")

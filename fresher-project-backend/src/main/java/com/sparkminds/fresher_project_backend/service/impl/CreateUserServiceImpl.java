@@ -77,6 +77,7 @@ public class CreateUserServiceImpl implements CreateUserService {
             UserRole userRole = UserRole.builder()
                     .user(user)
                     .role(defaultRole)
+                    .isDelete(false)
                     .build();
 
             // Save UserRole
