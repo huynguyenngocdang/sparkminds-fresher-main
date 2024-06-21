@@ -12,8 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateCategoryRequest {
+public class UpdateCategoryNameRequest {
+    @NotNull(message = CategoryValidationConstant.CATEGORY_ID_NOT_EMPTY)
+    private Long categoryId;
+
     @NotBlank(message = CategoryValidationConstant.CATEGORY_NAME_NOT_BLANK)
     @NotNull(message = CategoryValidationConstant.CATEGORY_NAME_NOT_EMPTY)
-    private String name;
+    private String categoryNewName;
 }

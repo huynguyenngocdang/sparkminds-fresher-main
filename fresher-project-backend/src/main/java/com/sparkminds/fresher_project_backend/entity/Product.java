@@ -1,6 +1,7 @@
 package com.sparkminds.fresher_project_backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,9 +22,13 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "product_name")
     private String productName;
     private Double price;
     private Double quantity;
+
+    @Column(name = "is_delete")
     private boolean isDelete;
 
     @ManyToOne

@@ -1,6 +1,7 @@
 package com.sparkminds.fresher_project_backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -25,9 +26,11 @@ public class UserProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "full_name")
     private String fullName;
     private int age;
     private String gender;
+    @Column(name = "is_delete")
     private boolean isDelete;
 
     @OneToOne(fetch = FetchType.LAZY)

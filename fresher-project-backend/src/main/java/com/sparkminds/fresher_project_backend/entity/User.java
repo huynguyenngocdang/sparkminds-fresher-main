@@ -2,6 +2,7 @@ package com.sparkminds.fresher_project_backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -31,6 +32,7 @@ public class User {
     private Long id;
     private String username;
     private String password;
+    @Column(name = "is_delete")
     private boolean isDelete;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)

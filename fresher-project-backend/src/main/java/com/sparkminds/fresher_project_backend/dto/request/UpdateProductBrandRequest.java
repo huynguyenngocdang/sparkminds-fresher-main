@@ -1,6 +1,7 @@
 package com.sparkminds.fresher_project_backend.dto.request;
 
 import com.sparkminds.fresher_project_backend.constant.BrandValidationConstant;
+import com.sparkminds.fresher_project_backend.constant.ProductValidationConstant;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -12,8 +13,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateBrandRequest {
-    @NotBlank(message = BrandValidationConstant.BRAND_NAME_NOT_BLANK)
+public class UpdateProductBrandRequest {
+
+    @NotNull(message = ProductValidationConstant.PRODUCT_ID_NOT_EMPTY)
+    private Long productId;
+
     @NotNull(message = BrandValidationConstant.BRAND_NAME_NOT_EMPTY)
-    private String name;
+    private Long newBrandId;
 }

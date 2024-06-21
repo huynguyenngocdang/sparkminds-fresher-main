@@ -5,4 +5,6 @@ public class BrandConstant extends CommonConstant {
     public static final String CREATE_BRAND_FAIL = CREATE_FAIL + " brand";
     public static final String INVALID_BRAND_ALREADY_EXIST = "Brand " + INVALID_ALREADY_EXIST;
     public static final String INVALID_BRAND_NOT_EXIST = "Brand " + INVALID_NOT_EXIST;
+    public static final String UPDATE_BRAND_SUCCESSFUL = "Brand " + UPDATE_SUCCESSFUL;
+    public static final String UPDATE_BRAND_FAIL = UPDATE_FAIL + " brand";
 }

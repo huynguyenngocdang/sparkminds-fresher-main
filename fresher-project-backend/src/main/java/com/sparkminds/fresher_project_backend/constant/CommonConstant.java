@@ -9,6 +9,6 @@ public class CommonConstant {
     public static final String DELETE_FAIL = "Fail to ";
     public static final String RESTORE_SUCCESSFUL = "restored successfully";
     public static final String RESTORE_FAIL = "Fail to ";
-    public static final String INVALID_ALREADY_EXIST = "with this name already exists.";
-    public static final String INVALID_NOT_EXIST = "with this name not exists.";
+    public static final String INVALID_ALREADY_EXIST = " already exists.";
+    public static final String INVALID_NOT_EXIST = "does not exists.";
 }

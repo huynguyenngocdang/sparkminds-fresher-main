@@ -12,8 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateBrandRequest {
+public class UpdateBrandNameRequest {
+    @NotNull(message = BrandValidationConstant.BRAND_ID_NOT_EMPTY)
+    private Long brandId;
+
     @NotBlank(message = BrandValidationConstant.BRAND_NAME_NOT_BLANK)
     @NotNull(message = BrandValidationConstant.BRAND_NAME_NOT_EMPTY)
-    private String name;
+    private String brandNewName;
 }
