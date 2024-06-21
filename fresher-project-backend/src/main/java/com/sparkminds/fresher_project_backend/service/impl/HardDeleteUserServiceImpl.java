@@ -24,10 +24,8 @@ public class HardDeleteUserServiceImpl implements HardDeleteUserService {
     @Transactional(rollbackFor = Exception.class)
     public ResponsePayload hardDeleteUser(DeleteUserRequest request) {
         try {
-            User user = userRepository.findByUsername(request.getUsername())
-                    .orElseThrow(() -> new ResourceNotFoundException(UserConstant.INVALID_USER_NOT_EXIST));
-
-            //            user.getUserRoles().forEach(userRole -> userRoleRepository.deleteById(userRole.getId()));
+            User user = userRepository.findById(request.getUserId())
+                    .orElseThrow(() -> new ResourceNotFoundException(UserConstant.INVALID_USER_NOT_EXIST + " userId: " + request.getUserId()));
 
             userRepository.deleteById(user.getId());
             return responsePayloadUtility.buildResponse(

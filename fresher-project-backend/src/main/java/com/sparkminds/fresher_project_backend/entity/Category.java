@@ -32,6 +32,6 @@ public class Category {
     @Column(name = "is_delete")
     private boolean isDelete;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Product> products = new ArrayList<>();
 }

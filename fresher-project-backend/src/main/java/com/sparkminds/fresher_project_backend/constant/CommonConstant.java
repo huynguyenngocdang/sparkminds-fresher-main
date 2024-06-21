@@ -1,6 +1,7 @@
 package com.sparkminds.fresher_project_backend.constant;
 
 public class CommonConstant {
+    public static final String NOT_ASSIGN = "N/A";
     public static final String CREATE_SUCCESSFUL = "registered successfully";
     public static final String CREATE_FAIL = "Fail to create";
     public static final String UPDATE_SUCCESSFUL = "updated successfully";

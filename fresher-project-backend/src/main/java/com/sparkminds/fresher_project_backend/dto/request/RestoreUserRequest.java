@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class RestoreUserRequest {
-    @NotBlank(message = UserValidationConstant.USERNAME_NOT_BLANK)
-    @NotNull(message = UserValidationConstant.USERNAME_NOT_EMPTY)
-    private String username;
+
+    @NotNull(message = UserValidationConstant.USER_ID_NOT_EMPTY)
+    private Long userId;
 }

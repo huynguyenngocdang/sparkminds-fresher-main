@@ -1,7 +1,6 @@
 package com.sparkminds.fresher_project_backend.dto.request;
 
-import com.sparkminds.fresher_project_backend.constant.UserValidationConstant;
-import jakarta.validation.constraints.NotBlank;
+import com.sparkminds.fresher_project_backend.constant.BrandValidationConstant;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,8 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DeleteUserRequest {
-
-    @NotNull(message = UserValidationConstant.USER_ID_NOT_EMPTY)
-    private Long userId;
+public class RestoreBrandRequest {
+    @NotNull(message = BrandValidationConstant.BRAND_ID_NOT_EMPTY)
+    private Long brandId;
 }

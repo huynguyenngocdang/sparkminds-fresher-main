@@ -1,6 +1,6 @@
 package com.sparkminds.fresher_project_backend.dto.request;
 
-import com.sparkminds.fresher_project_backend.constant.UserValidationConstant;
+import com.sparkminds.fresher_project_backend.constant.CategoryValidationConstant;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -12,8 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DeleteUserRequest {
-
-    @NotNull(message = UserValidationConstant.USER_ID_NOT_EMPTY)
-    private Long userId;
+public class DeleteCategoryRequest {
+    @NotNull(message = CategoryValidationConstant.CATEGORY_ID_NOT_EMPTY)
+    private Long categoryId;
 }

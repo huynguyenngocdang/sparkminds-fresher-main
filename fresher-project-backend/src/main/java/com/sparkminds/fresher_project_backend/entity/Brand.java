@@ -30,7 +30,6 @@ public class Brand {
     @Column(name = "is_delete")
     private boolean isDelete;
 
-    @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY)
     private List<Product> products = new ArrayList<>();
-
 }

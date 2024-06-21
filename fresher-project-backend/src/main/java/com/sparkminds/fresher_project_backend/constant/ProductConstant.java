@@ -11,4 +11,10 @@ public class ProductConstant extends CommonConstant{
     public static final String UPDATE_PRODUCT_BRAND_FAIL = UPDATE_FAIL + " product brand";
     public static final String UPDATE_PRODUCT_CATEGORY_SUCCESSFUL = "Product category " + UPDATE_SUCCESSFUL;
     public static final String UPDATE_PRODUCT_CATEGORY_FAIL = UPDATE_FAIL + " product category";
+    public static final String HARD_DELETE_PRODUCT_SUCCESSFUL = "Product hard " + DELETE_SUCCESSFUL;
+    public static final String HARD_DELETE_PRODUCT_FAIL = DELETE_FAIL + "hard delete product";
+    public static final String SOFT_DELETE_PRODUCT_SUCCESSFUL = "Product soft " + DELETE_SUCCESSFUL;
+    public static final String SOFT_DELETE_PRODUCT_FAIL =  DELETE_FAIL + "soft delete product";
+    public static final String SOFT_RESTORE_PRODUCT_SUCCESSFUL = "Product soft " + RESTORE_SUCCESSFUL;
+    public static final String SOFT_RESTORE_PRODUCT_FAIL =  RESTORE_FAIL + " restore product";
 }

@@ -33,10 +33,10 @@ public class SoftDeleteUserServiceImpl implements SoftDeleteUserService {
     @Transactional(rollbackFor = Exception.class)
     public ResponsePayload softDeleteUser(DeleteUserRequest request) {
         try {
-            User user = userRepository.findByUsername(request.getUsername())
-                    .orElseThrow(() -> new ResourceNotFoundException(UserConstant.INVALID_USER_NOT_EXIST));
+            User user = userRepository.findById(request.getUserId())
+                    .orElseThrow(() -> new ResourceNotFoundException(UserConstant.INVALID_USER_NOT_EXIST + " userId: " + request.getUserId()));
             UserProfile userProfile = userProfileRepository.findByUser(user)
-                    .orElseThrow(() -> new ResourceNotFoundException(UserConstant.INVALID_USER_PROFILE_NOT_EXIST));
+                    .orElseThrow(() -> new ResourceNotFoundException(UserConstant.INVALID_USER_PROFILE_NOT_EXIST + " userId: " + request.getUserId()));
             List<UserRole> userRoles = userRoleRepository.findAllByUser(user);
             List<Product> products = productRepository.findAllByUser(user);
 

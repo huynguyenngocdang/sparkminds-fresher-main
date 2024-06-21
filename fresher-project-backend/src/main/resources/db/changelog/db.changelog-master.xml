@@ -9,4 +9,5 @@
     <include file="classpath:db/changelog/20240619090000_create_product.xml"/>
     <include file="classpath:db/changelog/20240619100000_insert_user.xml"/>
     <include file="classpath:db/changelog/20240619110000_insert_product.xml"/>
+    <include file="classpath:db/changelog/20240621120000_insert_product.xml"/>
 </databaseChangeLog>

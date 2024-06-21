@@ -33,8 +33,8 @@ public class SoftRestoreUserServiceImpl implements SoftRestoreUserService {
     @Transactional(rollbackFor = Exception.class)
     public ResponsePayload restoreUserService(RestoreUserRequest request) {
         try {
-            User user = userRepository.findByUsername(request.getUsername())
-                    .orElseThrow(() -> new ResourceNotFoundException(UserConstant.INVALID_USER_NOT_EXIST));
+            User user = userRepository.findById(request.getUserId())
+                    .orElseThrow(() -> new ResourceNotFoundException(UserConstant.INVALID_USER_NOT_EXIST + " userId: " + request.getUserId()));
             UserProfile userProfile = userProfileRepository.findByUser(user)
                     .orElseThrow(() -> new ResourceNotFoundException(UserConstant.INVALID_USER_PROFILE_NOT_EXIST));
             List<UserRole> userRoles = userRoleRepository.findAllByUser(user);
