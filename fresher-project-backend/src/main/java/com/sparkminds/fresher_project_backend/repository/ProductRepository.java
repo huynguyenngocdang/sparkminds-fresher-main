@@ -22,5 +22,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p WHERE (:minPrice IS NULL OR p.price >= :minPrice) " +
             "AND (:maxPrice IS NULL OR p.price <= :maxPrice) AND p.isDelete = false")
     List<Product> findProductByDynamicPriceRange(@Param("minPrice") Double minPrice, @Param("maxPrice") Double maxPrice);
+
+    @Query("SELECT p FROM Product  p WHERE p.category.id IN :categoryIds AND p.isDelete = false")
+    List<Product> findProductsByCategoryIds(@Param("categoryIds") List<Long> categoryIds);
 }
 

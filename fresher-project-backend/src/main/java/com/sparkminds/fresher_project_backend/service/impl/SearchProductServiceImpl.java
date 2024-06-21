@@ -1,6 +1,7 @@
 package com.sparkminds.fresher_project_backend.service.impl;
 
 import com.sparkminds.fresher_project_backend.constant.ProductSearchConstant;
+import com.sparkminds.fresher_project_backend.dto.request.SearchProductByCategoryRequest;
 import com.sparkminds.fresher_project_backend.dto.request.SearchProductByNameRequest;
 import com.sparkminds.fresher_project_backend.dto.request.SearchProductByPriceRangeRequest;
 import com.sparkminds.fresher_project_backend.dto.response.SearchProductResponse;
@@ -58,6 +59,28 @@ public class SearchProductServiceImpl implements SearchProductService {
                         .userId(product.getUser() != null ? product.getUser().getId() : null)
                         .build()
         ).toList();
+        return responsePayloadUtility.buildResponse(
+                ProductSearchConstant.PRODUCT_SEARCH_SUCCESS,
+                HttpStatus.OK,
+                productResponses,
+                null
+        );
+    }
+
+    @Override
+    public ResponsePayload searchProductByCategory(SearchProductByCategoryRequest request) {
+        List<Product> products = productRepository.findProductsByCategoryIds(request.getCategoryIds());
+        List<SearchProductResponse> productResponses = products.stream().map(product ->
+                SearchProductResponse.builder()
+                        .id(product.getId())
+                        .productName(product.getProductName())
+                        .price(product.getPrice())
+                        .quantity(product.getQuantity())
+                        .brandId(product.getBrand() != null ? product.getBrand().getId() : null)
+                        .categoryId(product.getCategory() != null ? product.getCategory().getId() : null)
+                        .userId(product.getUser() != null ? product.getUser().getId() : null)
+                        .build()).toList();
+
         return responsePayloadUtility.buildResponse(
                 ProductSearchConstant.PRODUCT_SEARCH_SUCCESS,
                 HttpStatus.OK,
