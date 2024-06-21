@@ -4,6 +4,7 @@ import com.sparkminds.fresher_project_backend.dto.request.CreateProductRequest;
 import com.sparkminds.fresher_project_backend.dto.request.DeleteProductRequest;
 import com.sparkminds.fresher_project_backend.dto.request.RestoreProductRequest;
 import com.sparkminds.fresher_project_backend.dto.request.SearchProductByNameRequest;
+import com.sparkminds.fresher_project_backend.dto.request.SearchProductByPriceRangeRequest;
 import com.sparkminds.fresher_project_backend.dto.request.UpdateProductBrandRequest;
 import com.sparkminds.fresher_project_backend.dto.request.UpdateProductCategoryRequest;
 import com.sparkminds.fresher_project_backend.dto.request.UpdateProductDetailsRequest;
@@ -48,6 +49,11 @@ public class ProductController {
     @PostMapping("/search-by-name")
     public ResponseEntity<ResponsePayload> searchProductByName(@RequestBody @Valid SearchProductByNameRequest request) {
         ResponsePayload responsePayload = searchProductService.searchProductsByName(request);
+        return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
+    }
+    @PostMapping("/search-by-price")
+    public ResponseEntity<ResponsePayload> searchProductByPrice(@RequestBody @Valid SearchProductByPriceRangeRequest request) {
+        ResponsePayload responsePayload = searchProductService.searchProductByPrice(request);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
     @PutMapping("/update-details")
