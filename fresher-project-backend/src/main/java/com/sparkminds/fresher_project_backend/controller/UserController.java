@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<ResponsePayload> createNewUser(@RequestBody @Valid CreateUserRequest createUserRequest) {
         ResponsePayload responsePayload = userService.createUser(createUserRequest);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());

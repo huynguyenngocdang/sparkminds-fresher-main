@@ -14,4 +14,5 @@ public interface UserService {
     ResponsePayload hardDeleteUser(DeleteUserRequest request);
     ResponsePayload softDeleteUser(DeleteUserRequest request);
     ResponsePayload restoreUserService(RestoreUserRequest request);
+
 }

@@ -20,10 +20,13 @@ import com.sparkminds.fresher_project_backend.repository.RoleRepository;
 import com.sparkminds.fresher_project_backend.repository.UserProfileRepository;
 import com.sparkminds.fresher_project_backend.repository.UserRepository;
 import com.sparkminds.fresher_project_backend.repository.UserRoleRepository;
+import com.sparkminds.fresher_project_backend.service.JwtService;
 import com.sparkminds.fresher_project_backend.service.UserService;
 import com.sparkminds.fresher_project_backend.utility.ResponsePayloadUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +43,9 @@ public class UserServiceImpl implements UserService {
     private final UserProfileRepository userProfileRepository;
     private final ProductRepository productRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
     @Override
     @Transactional
@@ -63,7 +69,9 @@ public class UserServiceImpl implements UserService {
             );
         }
 
-        User user = userMapper.toUserFromCreateRequest(request);
+        User user = new User();
+        user.setUsername(request.getUsername());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         UserProfile userProfile = userMapper.toUserProfileFromCreateRequest(request);
         user.setUserProfile(userProfile);
