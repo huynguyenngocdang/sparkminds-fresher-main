@@ -10,17 +10,13 @@ import com.sparkminds.fresher_project_backend.dto.request.UpdateProductBrandRequ
 import com.sparkminds.fresher_project_backend.dto.request.UpdateProductCategoryRequest;
 import com.sparkminds.fresher_project_backend.dto.request.UpdateProductDetailsRequest;
 import com.sparkminds.fresher_project_backend.payload.ResponsePayload;
-import com.sparkminds.fresher_project_backend.service.CreateProductService;
-import com.sparkminds.fresher_project_backend.service.HardDeleteProductService;
-import com.sparkminds.fresher_project_backend.service.SearchProductService;
-import com.sparkminds.fresher_project_backend.service.SoftDeleteProductService;
-import com.sparkminds.fresher_project_backend.service.SoftRestoreProductService;
-import com.sparkminds.fresher_project_backend.service.UpdateProductService;
+import com.sparkminds.fresher_project_backend.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -34,63 +30,59 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/products")
 public class ProductController {
 
-    private final CreateProductService createProductService;
-    private final SearchProductService searchProductService;
-    private final UpdateProductService updateProductService;
-    private final HardDeleteProductService hardDeleteProductService;
-    private final SoftDeleteProductService softDeleteProductService;
-    private final SoftRestoreProductService softRestoreProductService;
+    private final ProductService productService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<ResponsePayload> createNewProduct(@RequestBody @Valid CreateProductRequest request) {
-        ResponsePayload responsePayload = createProductService.createNewProduct(request);
+        ResponsePayload responsePayload = productService.createNewProduct(request);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
 
-    @PostMapping("/search-by-name")
+    @GetMapping("/search")
     public ResponseEntity<ResponsePayload> searchProductByName(@RequestBody @Valid SearchProductByNameRequest request) {
-        ResponsePayload responsePayload = searchProductService.searchProductsByName(request);
-        return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
-    }
-    @PostMapping("/search-by-price")
-    public ResponseEntity<ResponsePayload> searchProductByPrice(@RequestBody @Valid SearchProductByPriceRangeRequest request) {
-        ResponsePayload responsePayload = searchProductService.searchProductByPrice(request);
-        return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
-    }
-    @PostMapping("/search-by-categories")
-    public ResponseEntity<ResponsePayload> searchProductByCategory(@RequestBody @Valid SearchProductByCategoryRequest request) {
-        ResponsePayload responsePayload = searchProductService.searchProductByCategory(request);
-        return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
-    }
-    @PutMapping("/update-details")
-    public ResponseEntity<ResponsePayload> updateProductDetails(@RequestBody @Valid UpdateProductDetailsRequest request) {
-        ResponsePayload responsePayload = updateProductService.updateProductDetails(request);
+        ResponsePayload responsePayload = productService.searchProductsByName(request);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
 
-    @PutMapping("/update-brand")
+    @GetMapping("/price")
+    public ResponseEntity<ResponsePayload> searchProductByPrice(@RequestBody @Valid SearchProductByPriceRangeRequest request) {
+        ResponsePayload responsePayload = productService.searchProductByPrice(request);
+        return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
+    }
+    @GetMapping("/categories")
+    public ResponseEntity<ResponsePayload> searchProductByCategory(@RequestBody @Valid SearchProductByCategoryRequest request) {
+        ResponsePayload responsePayload = productService.searchProductByCategory(request);
+        return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
+    }
+    @PutMapping
+    public ResponseEntity<ResponsePayload> updateProductDetails(@RequestBody @Valid UpdateProductDetailsRequest request) {
+        ResponsePayload responsePayload = productService.updateProductDetails(request);
+        return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
+    }
+
+    @PutMapping("/brand")
     public ResponseEntity<ResponsePayload> updateProductBrand(@RequestBody @Valid UpdateProductBrandRequest request) {
-        ResponsePayload responsePayload = updateProductService.updateProductBrand(request);
+        ResponsePayload responsePayload = productService.updateProductBrand(request);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
-    @PutMapping("/update-category")
+    @PutMapping("/category")
     public ResponseEntity<ResponsePayload> updateProductCategory(@RequestBody @Valid UpdateProductCategoryRequest request) {
-        ResponsePayload responsePayload = updateProductService.updateProductCategory(request);
+        ResponsePayload responsePayload = productService.updateProductCategory(request);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
-    @DeleteMapping("/hard-delete-product")
+    @DeleteMapping("/hard")
     public ResponseEntity<ResponsePayload> hardDeleteProductById(@RequestBody @Valid DeleteProductRequest request) {
-        ResponsePayload responsePayload = hardDeleteProductService.hardDeleteProductById(request);
+        ResponsePayload responsePayload = productService.hardDeleteProductById(request);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
-    @DeleteMapping("/soft-delete-product")
+    @DeleteMapping
     public ResponseEntity<ResponsePayload> softDeleteProductById(@RequestBody @Valid DeleteProductRequest request) {
-        ResponsePayload responsePayload = softDeleteProductService.softDeleteProductById(request);
+        ResponsePayload responsePayload = productService.softDeleteProductById(request);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
-    @PatchMapping("/soft-restore-product")
+    @PatchMapping
     public ResponseEntity<ResponsePayload> softRestoreProductById(@RequestBody @Valid RestoreProductRequest request) {
-        ResponsePayload responsePayload = softRestoreProductService.softRestoreProductById(request);
+        ResponsePayload responsePayload = productService.softRestoreProductById(request);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
 }

@@ -5,11 +5,7 @@ import com.sparkminds.fresher_project_backend.dto.request.DeleteCategoryRequest;
 import com.sparkminds.fresher_project_backend.dto.request.RestoreCategoryRequest;
 import com.sparkminds.fresher_project_backend.dto.request.UpdateCategoryNameRequest;
 import com.sparkminds.fresher_project_backend.payload.ResponsePayload;
-import com.sparkminds.fresher_project_backend.service.CreateCategoryService;
-import com.sparkminds.fresher_project_backend.service.HardDeleteCategoryService;
-import com.sparkminds.fresher_project_backend.service.SoftDeleteCategoryService;
-import com.sparkminds.fresher_project_backend.service.SoftRestoreCategoryService;
-import com.sparkminds.fresher_project_backend.service.UpdateCategoryService;
+import com.sparkminds.fresher_project_backend.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,34 +23,30 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/categories")
 public class CategoryController {
-    private final CreateCategoryService createCategoryService;
-    private final UpdateCategoryService updateCategoryService;
-    private final HardDeleteCategoryService hardDeleteCategoryService;
-    private final SoftDeleteCategoryService softDeleteCategoryService;
-    private final SoftRestoreCategoryService softRestoreCategoryService;
-    @PostMapping("/create")
+    private final CategoryService categoryService;
+    @PostMapping
     public ResponseEntity<ResponsePayload> createCategory(@RequestBody @Valid CreateCategoryRequest request) {
-        ResponsePayload responsePayload = createCategoryService.createCategory(request);
+        ResponsePayload responsePayload = categoryService.createCategory(request);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
-    @PutMapping("/update")
+    @PutMapping
     public ResponseEntity<ResponsePayload> updateCategoryName(@RequestBody @Valid UpdateCategoryNameRequest request) {
-        ResponsePayload responsePayload = updateCategoryService.updateCategoryName(request);
+        ResponsePayload responsePayload = categoryService.updateCategoryName(request);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
-    @DeleteMapping("/hard-delete-category")
+    @DeleteMapping("/hard")
     public ResponseEntity<ResponsePayload> hardDeleteCategory(@RequestBody @Valid DeleteCategoryRequest request) {
-        ResponsePayload responsePayload = hardDeleteCategoryService.hardDeleteCategoryById(request);
+        ResponsePayload responsePayload = categoryService.hardDeleteCategoryById(request);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
-    @DeleteMapping("/soft-delete-category")
+    @DeleteMapping
     public ResponseEntity<ResponsePayload> softDeleteCategory(@RequestBody @Valid DeleteCategoryRequest request) {
-        ResponsePayload responsePayload = softDeleteCategoryService.softDeleteCategoryById(request);
+        ResponsePayload responsePayload = categoryService.softDeleteCategoryById(request);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
-    @PatchMapping("/soft-restore-category")
+    @PatchMapping
     public ResponseEntity<ResponsePayload> softRestoreCategory(@RequestBody @Valid RestoreCategoryRequest request) {
-        ResponsePayload responsePayload = softRestoreCategoryService.softRestoreCategoryById(request);
+        ResponsePayload responsePayload = categoryService.softRestoreCategoryById(request);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
 }

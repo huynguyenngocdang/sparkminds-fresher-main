@@ -6,12 +6,7 @@ import com.sparkminds.fresher_project_backend.dto.request.RestoreUserRequest;
 import com.sparkminds.fresher_project_backend.dto.request.UpdateUserProfileRequest;
 import com.sparkminds.fresher_project_backend.dto.request.UpdateUserRequest;
 import com.sparkminds.fresher_project_backend.payload.ResponsePayload;
-import com.sparkminds.fresher_project_backend.service.CreateUserService;
-import com.sparkminds.fresher_project_backend.service.HardDeleteUserService;
-import com.sparkminds.fresher_project_backend.service.SoftDeleteUserService;
-import com.sparkminds.fresher_project_backend.service.SoftRestoreUserService;
-import com.sparkminds.fresher_project_backend.service.UpdateUserProfileService;
-import com.sparkminds.fresher_project_backend.service.UpdateUserService;
+import com.sparkminds.fresher_project_backend.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,45 +24,40 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin("*")
 @RequestMapping("/api/users")
 public class UserController {
-    private final CreateUserService createUserService;
-    private final UpdateUserService updateUserService;
-    private final UpdateUserProfileService updateUserProfileService;
-    private final HardDeleteUserService hardDeleteUserService;
-    private final SoftDeleteUserService softDeleteUserService;
-    private final SoftRestoreUserService softRestoreUserService;
+    private final UserService userService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<ResponsePayload> createNewUser(@RequestBody @Valid CreateUserRequest createUserRequest) {
-        ResponsePayload responsePayload = createUserService.createUser(createUserRequest);
+        ResponsePayload responsePayload = userService.createUser(createUserRequest);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
 
-    @PutMapping("/update-user")
+    @PutMapping
     public ResponseEntity<ResponsePayload> updateUser(@RequestBody @Valid UpdateUserRequest request) {
-        ResponsePayload responsePayload = updateUserService.updateUser(request);
+        ResponsePayload responsePayload = userService.updateUser(request);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
 
-    @PutMapping("/update-profile")
+    @PutMapping("/profile")
     public ResponseEntity<ResponsePayload> updateUserProfile(@RequestBody @Valid UpdateUserProfileRequest request) {
-        ResponsePayload responsePayload = updateUserProfileService.updateUserProfile(request);
+        ResponsePayload responsePayload = userService.updateUserProfile(request);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
-    @DeleteMapping("/hard-delete-user")
+    @DeleteMapping("/hard")
     public ResponseEntity<ResponsePayload> hardDeleteUser(@RequestBody @Valid DeleteUserRequest request) {
-        ResponsePayload responsePayload = hardDeleteUserService.hardDeleteUser(request);
+        ResponsePayload responsePayload = userService.hardDeleteUser(request);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
 
-    @DeleteMapping("/soft-delete-user")
+    @DeleteMapping
     public ResponseEntity<ResponsePayload> softDeleteUser(@RequestBody @Valid DeleteUserRequest request) {
-        ResponsePayload responsePayload = softDeleteUserService.softDeleteUser(request);
+        ResponsePayload responsePayload = userService.softDeleteUser(request);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
 
-    @PatchMapping("/restore-user")
+    @PatchMapping
     public ResponseEntity<ResponsePayload> softDeleteUser(@RequestBody @Valid RestoreUserRequest request) {
-        ResponsePayload responsePayload = softRestoreUserService.restoreUserService(request);
+        ResponsePayload responsePayload = userService.restoreUserService(request);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
 }

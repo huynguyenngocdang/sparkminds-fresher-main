@@ -12,36 +12,28 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
-public class CreateProductCategoryExistValidationHandlerImpl implements CreateProductHandler {
+
+public class CreateProductCategoryExistValidationHandlerImpl extends AbstractCreateProductHandler {
     private final CategoryRepository categoryRepository;
-    private final ResponsePayloadUtility responsePayloadUtility;
-    private CreateProductHandler nextHandler;
-    @Override
-    public void setNextHandler(CreateProductHandler handler) {
-        this.nextHandler = handler;
+
+    public CreateProductCategoryExistValidationHandlerImpl(ResponsePayloadUtility responsePayloadUtility, CategoryRepository categoryRepository) {
+        super(responsePayloadUtility);
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
-    public ResponsePayload handle(CreateProductRequest request) {
-        if(!categoryRepository.existsByCategoryName(request.getCategoryName())) {
-            return responsePayloadUtility.buildResponse(
-                    CategoryConstant.INVALID_CATEGORY_NOT_EXIST,
-                    HttpStatus.BAD_REQUEST,
-                    null,
-                    CategoryConstant.INVALID_CATEGORY_NOT_EXIST
-            );
-        }
-        if(nextHandler!= null) {
-            return nextHandler.handle(request);
-        }
-
-        String taskHandleMessage = "Validate category exist" + HandlerCommonConstant.HANDLE_TASK_SUCCESS;
-        return responsePayloadUtility.buildResponse(
-                taskHandleMessage,
-                HttpStatus.ACCEPTED,
-                null,
-                null
-        );
+    protected boolean validate(CreateProductRequest request) {
+        return categoryRepository.existsById(request.getCategoryId());
     }
+
+    @Override
+    protected String getSuccessMessage() {
+        return "Validate category exist" + HandlerCommonConstant.HANDLE_TASK_SUCCESS;
+    }
+
+    @Override
+    protected String getErrorMessage() {
+        return CategoryConstant.INVALID_CATEGORY_NOT_EXIST;
+    }
+
 }

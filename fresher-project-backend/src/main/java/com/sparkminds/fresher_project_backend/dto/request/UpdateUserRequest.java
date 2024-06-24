@@ -1,5 +1,6 @@
 package com.sparkminds.fresher_project_backend.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sparkminds.fresher_project_backend.constant.UserValidationConstant;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,11 +14,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class UpdateUserRequest {
-    @NotBlank(message = UserValidationConstant.USERNAME_NOT_BLANK)
-    @NotNull(message = UserValidationConstant.USERNAME_NOT_EMPTY)
-    private String username;
+    @NotNull(message = UserValidationConstant.USER_ID_NOT_EMPTY)
+    @JsonProperty("userId")
+    private Long userId;
 
     @NotBlank(message = UserValidationConstant.PASSWORD_NOT_BLANK)
     @NotNull(message = UserValidationConstant.PASSWORD_NOT_EMPTY)
+    @JsonProperty("password")
     private String password;
 }

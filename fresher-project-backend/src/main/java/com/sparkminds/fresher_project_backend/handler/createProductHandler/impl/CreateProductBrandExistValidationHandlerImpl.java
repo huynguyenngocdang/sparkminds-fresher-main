@@ -12,36 +12,27 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
-public class CreateProductBrandExistValidationHandlerImpl implements CreateProductHandler {
+public class CreateProductBrandExistValidationHandlerImpl extends AbstractCreateProductHandler {
     private final BrandRepository brandRepository;
-    private final ResponsePayloadUtility responsePayloadUtility;
-    private CreateProductHandler nextHandler;
-    @Override
-    public void setNextHandler(CreateProductHandler handler) {
-        this.nextHandler = handler;
+
+    public CreateProductBrandExistValidationHandlerImpl(ResponsePayloadUtility responsePayloadUtility, BrandRepository brandRepository) {
+        super(responsePayloadUtility);
+        this.brandRepository = brandRepository;
     }
 
     @Override
-    public ResponsePayload handle(CreateProductRequest request) {
-        if(!brandRepository.existsByBrandName(request.getBrandName())) {
-            return responsePayloadUtility.buildResponse(
-                    BrandConstant.INVALID_BRAND_NOT_EXIST,
-                    HttpStatus.BAD_REQUEST,
-                    null,
-                    BrandConstant.INVALID_BRAND_NOT_EXIST
-            );
-        }
-        if(nextHandler!= null) {
-            return nextHandler.handle(request);
-        }
-
-        String taskHandleMessage = "Validate brand exist" + HandlerCommonConstant.HANDLE_TASK_SUCCESS;
-        return responsePayloadUtility.buildResponse(
-                taskHandleMessage,
-                HttpStatus.ACCEPTED,
-                null,
-                null
-        );
+    protected boolean validate(CreateProductRequest request) {
+        return brandRepository.existsById(request.getBrandId());
     }
+
+    @Override
+    protected String getSuccessMessage() {
+        return "Validate brand exist" + HandlerCommonConstant.HANDLE_TASK_SUCCESS;
+    }
+
+    @Override
+    protected String getErrorMessage() {
+        return BrandConstant.INVALID_BRAND_NOT_EXIST;
+    }
+
 }

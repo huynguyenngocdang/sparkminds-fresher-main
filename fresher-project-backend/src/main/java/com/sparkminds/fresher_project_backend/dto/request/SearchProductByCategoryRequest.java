@@ -1,5 +1,6 @@
 package com.sparkminds.fresher_project_backend.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sparkminds.fresher_project_backend.constant.CategoryConstant;
 import com.sparkminds.fresher_project_backend.constant.CategoryValidationConstant;
 import jakarta.validation.constraints.NotNull;
@@ -16,5 +17,6 @@ import java.util.List;
 @Builder
 public class SearchProductByCategoryRequest {
     @NotNull(message = CategoryValidationConstant.CATEGORY_ID_NOT_EMPTY)
+    @JsonProperty("categoryIds")
     private List<Long> categoryIds;
 }

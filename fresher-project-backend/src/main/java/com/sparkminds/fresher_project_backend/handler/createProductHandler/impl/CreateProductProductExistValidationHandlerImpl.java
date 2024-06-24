@@ -12,36 +12,28 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
-public class CreateProductProductExistValidationHandlerImpl implements CreateProductHandler {
+
+public class CreateProductProductExistValidationHandlerImpl extends AbstractCreateProductHandler {
     private final ProductRepository productRepository;
-    private final ResponsePayloadUtility responsePayloadUtility;
-    private CreateProductHandler nextHandler;
-    @Override
-    public void setNextHandler(CreateProductHandler handler) {
-        this.nextHandler = handler;
+
+    public CreateProductProductExistValidationHandlerImpl(ResponsePayloadUtility responsePayloadUtility, ProductRepository productRepository) {
+        super(responsePayloadUtility);
+        this.productRepository = productRepository;
     }
 
     @Override
-    public ResponsePayload handle(CreateProductRequest request) {
-        if(productRepository.existsByProductName(request.getProductName())) {
-            return responsePayloadUtility.buildResponse(
-                    ProductConstant.INVALID_PRODUCT_ALREADY_EXIST,
-                    HttpStatus.BAD_REQUEST,
-                    null,
-                    ProductConstant.INVALID_PRODUCT_ALREADY_EXIST
-            );
-        }
-        if(nextHandler!= null) {
-            return nextHandler.handle(request);
-        }
-
-        String taskHandleMessage = "Validate product not exist" + HandlerCommonConstant.HANDLE_TASK_SUCCESS;
-        return responsePayloadUtility.buildResponse(
-                taskHandleMessage,
-                HttpStatus.ACCEPTED,
-                null,
-                null
-        );
+    protected boolean validate(CreateProductRequest request) {
+        return !productRepository.existsByProductName(request.getProductName());
     }
+
+    @Override
+    protected String getSuccessMessage() {
+        return "Validate product not exist" + HandlerCommonConstant.HANDLE_TASK_SUCCESS;
+    }
+
+    @Override
+    protected String getErrorMessage() {
+        return ProductConstant.INVALID_PRODUCT_ALREADY_EXIST;
+    }
+
 }

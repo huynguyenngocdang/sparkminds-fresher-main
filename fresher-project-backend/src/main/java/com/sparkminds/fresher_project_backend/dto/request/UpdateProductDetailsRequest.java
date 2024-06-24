@@ -1,5 +1,6 @@
 package com.sparkminds.fresher_project_backend.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sparkminds.fresher_project_backend.constant.CategoryValidationConstant;
 import com.sparkminds.fresher_project_backend.constant.ProductConstant;
 import com.sparkminds.fresher_project_backend.constant.ProductValidationConstant;
@@ -18,15 +19,19 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UpdateProductDetailsRequest {
     @NotNull(message = ProductValidationConstant.PRODUCT_ID_NOT_EMPTY)
+    @JsonProperty("productId")
     private Long productId;
     @NotBlank(message = ProductValidationConstant.PRODUCT_NAME_NOT_BLANK)
     @NotNull(message = ProductValidationConstant.PRODUCT_NAME_NOT_EMPTY)
+    @JsonProperty("productName")
     private String productName;
     @NotNull(message = ProductValidationConstant.PRODUCT_PRICE_NOT_EMPTY)
     @PositiveOrZero(message = ProductValidationConstant.PRODUCT_PRICE_NOT_NEGATIVE)
+    @JsonProperty("price")
     private Double price;
     @NotNull(message = ProductValidationConstant.PRODUCT_QUANTITY_NOT_EMPTY)
     @PositiveOrZero(message = ProductValidationConstant.PRODUCT_QUANTITY_NOT_NEGATIVE)
+    @JsonProperty("quantity")
     private Double quantity;
 
 }

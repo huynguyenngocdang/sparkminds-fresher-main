@@ -1,5 +1,6 @@
 package com.sparkminds.fresher_project_backend.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sparkminds.fresher_project_backend.constant.ProductValidationConstant;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -13,5 +14,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class DeleteProductRequest {
     @NotNull(message = ProductValidationConstant.PRODUCT_ID_NOT_EMPTY)
+    @JsonProperty("productId")
     private Long productId;
 }

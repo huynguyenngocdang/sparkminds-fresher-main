@@ -27,7 +27,6 @@ public class UserRole {
     private Long id;
     @Column(name = "is_delete")
     private Boolean isDelete;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_USER_ID")
     @JsonBackReference

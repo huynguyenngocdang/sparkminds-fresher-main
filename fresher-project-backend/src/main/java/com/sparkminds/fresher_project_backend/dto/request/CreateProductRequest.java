@@ -1,5 +1,6 @@
 package com.sparkminds.fresher_project_backend.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sparkminds.fresher_project_backend.constant.BrandValidationConstant;
 import com.sparkminds.fresher_project_backend.constant.CategoryValidationConstant;
 import com.sparkminds.fresher_project_backend.constant.ProductValidationConstant;
@@ -17,27 +18,32 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CreateProductRequest {
-    @NotBlank(message = UserValidationConstant.USERNAME_NOT_BLANK)
-    @NotNull(message = UserValidationConstant.USERNAME_NOT_EMPTY)
-    private String username;
 
-    @NotBlank(message = BrandValidationConstant.BRAND_NAME_NOT_BLANK)
-    @NotNull(message = BrandValidationConstant.BRAND_NAME_NOT_EMPTY)
-    private String brandName;
+    @NotNull(message = UserValidationConstant.USER_ID_NOT_EMPTY)
+    @JsonProperty("userId")
+    private Long userId;
 
-    @NotBlank(message = CategoryValidationConstant.CATEGORY_NAME_NOT_BLANK)
-    @NotNull(message = CategoryValidationConstant.CATEGORY_NAME_NOT_EMPTY)
-    private String categoryName;
+
+    @NotNull(message = BrandValidationConstant.BRAND_ID_NOT_EMPTY)
+    @JsonProperty("brandId")
+    private Long brandId;
+
+    @NotNull(message = CategoryValidationConstant.CATEGORY_ID_NOT_EMPTY)
+    @JsonProperty("categoryId")
+    private Long categoryId;
 
     @NotBlank(message = ProductValidationConstant.PRODUCT_NAME_NOT_BLANK)
     @NotNull(message = ProductValidationConstant.PRODUCT_NAME_NOT_EMPTY)
+    @JsonProperty("productName")
     private String productName;
 
     @NotNull(message = ProductValidationConstant.PRODUCT_PRICE_NOT_EMPTY)
     @PositiveOrZero(message = ProductValidationConstant.PRODUCT_PRICE_NOT_NEGATIVE)
+    @JsonProperty("price")
     private Double price;
 
     @NotNull(message = ProductValidationConstant.PRODUCT_QUANTITY_NOT_EMPTY)
     @PositiveOrZero(message = ProductValidationConstant.PRODUCT_QUANTITY_NOT_NEGATIVE)
+    @JsonProperty("quantity")
     private Double quantity;
 }

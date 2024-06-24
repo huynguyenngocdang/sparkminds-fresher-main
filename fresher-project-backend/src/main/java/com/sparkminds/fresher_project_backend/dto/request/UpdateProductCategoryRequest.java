@@ -1,5 +1,6 @@
 package com.sparkminds.fresher_project_backend.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sparkminds.fresher_project_backend.constant.CategoryValidationConstant;
 import com.sparkminds.fresher_project_backend.constant.ProductValidationConstant;
 import jakarta.validation.constraints.NotBlank;
@@ -16,8 +17,10 @@ import lombok.NoArgsConstructor;
 public class UpdateProductCategoryRequest {
 
     @NotNull(message = ProductValidationConstant.PRODUCT_ID_NOT_EMPTY)
+    @JsonProperty("productId")
     private Long productId;
 
     @NotNull(message = CategoryValidationConstant.CATEGORY_ID_NOT_EMPTY)
+    @JsonProperty("newCategoryId")
     private Long newCategoryId;
 }

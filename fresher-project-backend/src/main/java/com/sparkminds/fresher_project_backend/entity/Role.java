@@ -32,6 +32,6 @@ public class Role {
     private boolean isDelete;
 
     @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
-    @JsonBackReference
+//    @JsonBackReference
     private List<UserRole> userRoles = new ArrayList<>();
 }

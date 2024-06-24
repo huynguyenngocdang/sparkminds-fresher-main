@@ -1,5 +1,6 @@
 package com.sparkminds.fresher_project_backend.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sparkminds.fresher_project_backend.constant.UserValidationConstant;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,5 +16,6 @@ import lombok.NoArgsConstructor;
 public class RestoreUserRequest {
 
     @NotNull(message = UserValidationConstant.USER_ID_NOT_EMPTY)
+    @JsonProperty("userId")
     private Long userId;
 }

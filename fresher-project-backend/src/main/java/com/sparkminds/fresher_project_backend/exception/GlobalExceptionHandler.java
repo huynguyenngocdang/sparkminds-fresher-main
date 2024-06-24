@@ -54,4 +54,24 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ResponsePayload> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        ResponsePayload responsePayload = responsePayloadUtility.buildResponse(
+                ex.getMessage(),
+                HttpStatus.NOT_FOUND,
+                null,
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
+    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ResponsePayload> handleAllExceptions(Exception ex) {
+        ResponsePayload responsePayload = responsePayloadUtility.buildResponse(
+                ex.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                null,
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
+    }
 }

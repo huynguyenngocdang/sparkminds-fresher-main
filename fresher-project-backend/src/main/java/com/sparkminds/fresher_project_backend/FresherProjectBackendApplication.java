@@ -17,5 +17,4 @@ public class FresherProjectBackendApplication {
 
 		SpringApplication.run(FresherProjectBackendApplication.class, args);
 	}
-
 }
