@@ -32,7 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public ResponsePayload createCategory(CreateCategoryRequest request) {
-        Optional<Category> existCategory = categoryRepository.findByCategoryNameForWrite(request.getName());
+        Optional<Category> existCategory = categoryRepository.findByCategoryName(request.getName());
         if (existCategory.isPresent()) {
             return responsePayloadUtility.buildResponse(
                     CategoryConstant.INVALID_CATEGORY_ALREADY_EXIST,

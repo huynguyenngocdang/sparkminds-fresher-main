@@ -33,7 +33,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     @Transactional
     public ResponsePayload createNewBrand(CreateBrandRequest request) {
-        Optional<Brand> existingBrand = brandRepository.findByBrandNameForWrite(request.getName());
+        Optional<Brand> existingBrand = brandRepository.findByBrandName(request.getName());
         if (existingBrand.isPresent()) {
             return responsePayloadUtility.buildResponse(
                     BrandConstant.INVALID_BRAND_ALREADY_EXIST,

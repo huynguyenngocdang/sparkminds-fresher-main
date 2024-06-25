@@ -11,6 +11,7 @@ import com.sparkminds.fresher_project_backend.dto.request.RestoreProductRequest;
 import com.sparkminds.fresher_project_backend.dto.request.SearchProductByCategoryRequest;
 import com.sparkminds.fresher_project_backend.dto.request.SearchProductByNameRequest;
 import com.sparkminds.fresher_project_backend.dto.request.SearchProductByPriceRangeRequest;
+import com.sparkminds.fresher_project_backend.dto.request.SearchProductsRequest;
 import com.sparkminds.fresher_project_backend.dto.request.UpdateProductBrandRequest;
 import com.sparkminds.fresher_project_backend.dto.request.UpdateProductCategoryRequest;
 import com.sparkminds.fresher_project_backend.dto.request.UpdateProductDetailsRequest;
@@ -30,8 +31,10 @@ import com.sparkminds.fresher_project_backend.repository.CategoryRepository;
 import com.sparkminds.fresher_project_backend.repository.ProductRepository;
 import com.sparkminds.fresher_project_backend.repository.UserRepository;
 import com.sparkminds.fresher_project_backend.service.ProductService;
+import com.sparkminds.fresher_project_backend.specification.ProductSpecification;
 import com.sparkminds.fresher_project_backend.utility.ResponsePayloadUtility;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +50,7 @@ public class ProductServiceImpl implements ProductService {
     private final UserRepository userRepository;
     private final ResponsePayloadUtility responsePayloadUtility;
     private final ProductMapper productMapper;
+    private final ProductSpecification productSpecification;
 
     private final CreateProductBrandExistValidationHandlerImpl createProductBrandExistValidationHandlerImpl;
     private final CreateProductCategoryExistValidationHandlerImpl createProductCategoryExistValidationHandlerImpl;
@@ -84,6 +88,27 @@ public class ProductServiceImpl implements ProductService {
                     null
             );
     }
+
+    @Override
+    public ResponsePayload searchProducts(SearchProductsRequest request) {
+
+        String productName = request.getProductName();
+        String category = request.getCategory();
+        String brand = request.getBrand();
+        Double minPrice = request.getMinPrice();
+        Double maxPrice = request.getMaxPrice();
+
+        Specification<Product> specification = productSpecification.searchProducts(productName, category, brand, minPrice, maxPrice);
+        List<Product> products = productRepository.findAll(specification);
+        List<SearchProductResponse> productResponses = productMapper.toSearchProductResponseList(products);
+        return responsePayloadUtility.buildResponse(
+                ProductSearchConstant.PRODUCT_SEARCH_SUCCESS,
+                HttpStatus.OK,
+                productResponses,
+                null
+        );
+    }
+
     @Override
     public ResponsePayload searchProductsByName(SearchProductByNameRequest request) {
         String formatQuery = request.getQuery().trim().toLowerCase();

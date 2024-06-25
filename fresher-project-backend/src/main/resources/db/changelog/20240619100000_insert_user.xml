@@ -30,23 +30,23 @@
         <insert tableName="user">
             <column name="id" value="1"/>
             <column name="username" value="admin"/>
-            <column name="password" value="admin"/>
+            <column name="password" value="$2a$10$tG.YuPpL65BcNmqC7Lt8kuUfZduJXZ2hCifPdVM5OrzLAx5/wSWTq"/>
         </insert>
     </changeSet>
 
     <changeSet id="5" author="huynnd">
         <insert tableName="user">
             <column name="id" value="2"/>
-            <column name="username" value="mod"/>
-            <column name="password" value="mod"/>
+            <column name="username" value="mod1"/>
+            <column name="password" value="$2a$10$kG0Z/k3KbCtzFbrFvqnkReBhcpA9Q.AOmzmoPEdvVX3zEAHOkVWIe"/>
         </insert>
     </changeSet>
 
     <changeSet id="6" author="huynnd">
         <insert tableName="user">
             <column name="id" value="3"/>
-            <column name="username" value="user"/>
-            <column name="password" value="user"/>
+            <column name="username" value="user1"/>
+            <column name="password" value="$2a$10$MveD.FtPv0aVNf5LD3aThO7fpwFN.f6/B6Zg35x8actCsWJ1SEWNC"/>
         </insert>
     </changeSet>
 
@@ -54,7 +54,7 @@
         <insert tableName="user">
             <column name="id" value="4"/>
             <column name="username" value="user2"/>
-            <column name="password" value="user2"/>
+            <column name="password" value="$2a$10$f2QFFBE8i.144IaNnmPJHenaNFVPoccPF6aZhy5bcVQ.Yl6l7Rqhu"/>
         </insert>
     </changeSet>
 
@@ -76,7 +76,7 @@
             <column name="age" value="28"/>
             <column name="gender" value="F"/>
             <column name="is_delete" value="0"/>
-            <column name="FK_USER_ID" value="2"/> <!-- User 'mod' -->
+            <column name="FK_USER_ID" value="2"/>
         </insert>
     </changeSet>
 

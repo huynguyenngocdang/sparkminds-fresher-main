@@ -6,6 +6,7 @@ import com.sparkminds.fresher_project_backend.dto.request.RestoreProductRequest;
 import com.sparkminds.fresher_project_backend.dto.request.SearchProductByCategoryRequest;
 import com.sparkminds.fresher_project_backend.dto.request.SearchProductByNameRequest;
 import com.sparkminds.fresher_project_backend.dto.request.SearchProductByPriceRangeRequest;
+import com.sparkminds.fresher_project_backend.dto.request.SearchProductsRequest;
 import com.sparkminds.fresher_project_backend.dto.request.UpdateProductBrandRequest;
 import com.sparkminds.fresher_project_backend.dto.request.UpdateProductCategoryRequest;
 import com.sparkminds.fresher_project_backend.dto.request.UpdateProductDetailsRequest;
@@ -37,23 +38,28 @@ public class ProductController {
         ResponsePayload responsePayload = productService.createNewProduct(request);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
-
-    @GetMapping("/search")
-    public ResponseEntity<ResponsePayload> searchProductByName(@RequestBody @Valid SearchProductByNameRequest request) {
-        ResponsePayload responsePayload = productService.searchProductsByName(request);
+    @GetMapping
+    public ResponseEntity<ResponsePayload> searchProduct(@RequestBody SearchProductsRequest request) {
+        ResponsePayload responsePayload = productService.searchProducts(request);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
 
-    @GetMapping("/price")
-    public ResponseEntity<ResponsePayload> searchProductByPrice(@RequestBody @Valid SearchProductByPriceRangeRequest request) {
-        ResponsePayload responsePayload = productService.searchProductByPrice(request);
-        return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
-    }
-    @GetMapping("/categories")
-    public ResponseEntity<ResponsePayload> searchProductByCategory(@RequestBody @Valid SearchProductByCategoryRequest request) {
-        ResponsePayload responsePayload = productService.searchProductByCategory(request);
-        return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
-    }
+//    @GetMapping("/search")
+//    public ResponseEntity<ResponsePayload> searchProductByName(@RequestBody @Valid SearchProductByNameRequest request) {
+//        ResponsePayload responsePayload = productService.searchProductsByName(request);
+//        return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
+//    }
+//
+//    @GetMapping("/price")
+//    public ResponseEntity<ResponsePayload> searchProductByPrice(@RequestBody @Valid SearchProductByPriceRangeRequest request) {
+//        ResponsePayload responsePayload = productService.searchProductByPrice(request);
+//        return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
+//    }
+//    @GetMapping("/categories")
+//    public ResponseEntity<ResponsePayload> searchProductByCategory(@RequestBody @Valid SearchProductByCategoryRequest request) {
+//        ResponsePayload responsePayload = productService.searchProductByCategory(request);
+//        return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
+//    }
     @PutMapping
     public ResponseEntity<ResponsePayload> updateProductDetails(@RequestBody @Valid UpdateProductDetailsRequest request) {
         ResponsePayload responsePayload = productService.updateProductDetails(request);

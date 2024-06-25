@@ -18,4 +18,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT c FROM Category c WHERE c.categoryName = :categoryName")
     Optional<Category> findByCategoryNameForWrite(@Param("categoryName") String categoryName);
+    Optional<Category> findByCategoryName(String categoryName);
 }

@@ -163,7 +163,7 @@ public class UserServiceImpl implements UserService {
     public ResponsePayload updateUser(UpdateUserRequest request) {
         User user = userRepository.findByUserIdForWrite(request.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException(UserConstant.INVALID_USER_NOT_EXIST + " userId: " + request.getUserId()));
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
         return responsePayloadUtility.buildResponse(
                 UserConstant.UPDATE_USER_SUCCESSFUL,
