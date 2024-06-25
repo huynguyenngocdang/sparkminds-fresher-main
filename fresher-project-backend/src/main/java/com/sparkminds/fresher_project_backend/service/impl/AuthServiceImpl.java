@@ -1,12 +1,17 @@
 package com.sparkminds.fresher_project_backend.service.impl;
 
+import com.sparkminds.fresher_project_backend.constant.ProductConstant;
+import com.sparkminds.fresher_project_backend.constant.RoleConstant;
 import com.sparkminds.fresher_project_backend.dto.request.LoginRequest;
 import com.sparkminds.fresher_project_backend.dto.response.LoginResponse;
 import com.sparkminds.fresher_project_backend.dto.response.RoleResponse;
+import com.sparkminds.fresher_project_backend.entity.Product;
 import com.sparkminds.fresher_project_backend.entity.Role;
 import com.sparkminds.fresher_project_backend.entity.User;
+import com.sparkminds.fresher_project_backend.exception.ResourceNotFoundException;
 import com.sparkminds.fresher_project_backend.mapper.RoleMapper;
 import com.sparkminds.fresher_project_backend.payload.ResponsePayload;
+import com.sparkminds.fresher_project_backend.repository.ProductRepository;
 import com.sparkminds.fresher_project_backend.repository.RoleRepository;
 import com.sparkminds.fresher_project_backend.repository.UserRepository;
 import com.sparkminds.fresher_project_backend.service.JwtService;
@@ -18,10 +23,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +40,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final RoleMapper roleMapper;
+    private final ProductRepository productRepository;
     @Override
     @Transactional
     public ResponsePayload login(LoginRequest request) {
@@ -78,14 +86,26 @@ public class AuthServiceImpl implements AuthService {
                 .map(this::mapRoleToRoleResponse)
                 .collect(Collectors.toList());
     }
-
     private RoleResponse mapRoleToRoleResponse(Role role) {
         return roleMapper.toRoleResponseFromRole(role);
     }
-
     @Override
     public boolean isUserNotDelete(String username) {
         User user = userRepository.findFirstByUsername(username);
         return !user.isDelete();
+    }
+    @Override
+    public boolean isProductOwnByUser(Long productId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException(ProductConstant.INVALID_PRODUCT_NOT_EXIST + " productId: " + productId));
+        return product.getUser().getUsername().equals(authentication.getName()) || isAdminOrModerator();
+    }
+    @Override
+    public boolean isAdminOrModerator() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_" + RoleConstant.ROLE_ADMIN) ||
+                        grantedAuthority.getAuthority().equals("ROLE_" + RoleConstant.ROLE_MODERATOR));
     }
 }

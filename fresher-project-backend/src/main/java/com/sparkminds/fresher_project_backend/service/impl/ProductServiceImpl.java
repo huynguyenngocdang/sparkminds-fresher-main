@@ -30,6 +30,7 @@ import com.sparkminds.fresher_project_backend.repository.BrandRepository;
 import com.sparkminds.fresher_project_backend.repository.CategoryRepository;
 import com.sparkminds.fresher_project_backend.repository.ProductRepository;
 import com.sparkminds.fresher_project_backend.repository.UserRepository;
+import com.sparkminds.fresher_project_backend.service.AuthService;
 import com.sparkminds.fresher_project_backend.service.ProductService;
 import com.sparkminds.fresher_project_backend.specification.ProductSpecification;
 import com.sparkminds.fresher_project_backend.utility.ResponsePayloadUtility;
@@ -51,6 +52,7 @@ public class ProductServiceImpl implements ProductService {
     private final ResponsePayloadUtility responsePayloadUtility;
     private final ProductMapper productMapper;
     private final ProductSpecification productSpecification;
+    private final AuthService authService;
 
     private final CreateProductBrandExistValidationHandlerImpl createProductBrandExistValidationHandlerImpl;
     private final CreateProductCategoryExistValidationHandlerImpl createProductCategoryExistValidationHandlerImpl;
@@ -110,59 +112,27 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ResponsePayload searchProductsByName(SearchProductByNameRequest request) {
-        String formatQuery = request.getQuery().trim().toLowerCase();
-        List<Product> products = productRepository.findProductByProductNameQuery(formatQuery);
-        List<SearchProductResponse> productResponses = productMapper.toSearchProductResponseList(products);
-
-        return responsePayloadUtility.buildResponse(
-                ProductSearchConstant.PRODUCT_SEARCH_SUCCESS,
-                HttpStatus.OK,
-                productResponses,
-                null
-        );
-    }
-
-    @Override
-    public ResponsePayload searchProductByPrice(SearchProductByPriceRangeRequest request) {
-        List<Product> products = productRepository.findProductByDynamicPriceRange(request.getPriceMin(), request.getPriceMax());
-        List<SearchProductResponse> productResponses = productMapper.toSearchProductResponseList(products);
-
-        return responsePayloadUtility.buildResponse(
-                ProductSearchConstant.PRODUCT_SEARCH_SUCCESS,
-                HttpStatus.OK,
-                productResponses,
-                null
-        );
-    }
-
-    @Override
-    public ResponsePayload searchProductByCategory(SearchProductByCategoryRequest request) {
-        List<Product> products = productRepository.findProductsByCategoryIds(request.getCategoryIds());
-        List<SearchProductResponse> productResponses = productMapper.toSearchProductResponseList(products);
-
-        return responsePayloadUtility.buildResponse(
-                ProductSearchConstant.PRODUCT_SEARCH_SUCCESS,
-                HttpStatus.OK,
-                productResponses,
-                null
-        );
-    }
-    @Override
     @Transactional
     public ResponsePayload hardDeleteProductById(DeleteProductRequest request) {
 
             Product product = productRepository.findById(request.getProductId())
                     .orElseThrow(() -> new ResourceNotFoundException( ProductConstant.INVALID_PRODUCT_NOT_EXIST + " productId: " + request.getProductId()));
-
-            productRepository.delete(product);
-
-            return responsePayloadUtility.buildResponse(
-                    ProductConstant.HARD_DELETE_PRODUCT_SUCCESSFUL,
-                    HttpStatus.OK,
-                    null,
-                    null
-            );
+            if(authService.isProductOwnByUser(product.getId())) {
+                productRepository.delete(product);
+                return responsePayloadUtility.buildResponse(
+                        ProductConstant.HARD_DELETE_PRODUCT_SUCCESSFUL,
+                        HttpStatus.OK,
+                        null,
+                        null
+                );
+            } else {
+                return responsePayloadUtility.buildResponse(
+                        ProductConstant.HARD_DELETE_PRODUCT_FAIL,
+                        HttpStatus.OK,
+                        null,
+                        null
+                );
+            }
     }
     @Override
     @Transactional
@@ -210,21 +180,28 @@ public class ProductServiceImpl implements ProductService {
                         ProductConstant.INVALID_PRODUCT_ALREADY_EXIST + request.getProductName()
                 );
             }
+            if(authService.isProductOwnByUser(product.getId())) {
+                product.setProductName(request.getProductName());
+                product.setPrice(request.getPrice());
+                product.setQuantity(request.getQuantity());
 
-            product.setProductName(request.getProductName());
-            product.setPrice(request.getPrice());
-            product.setQuantity(request.getQuantity());
+                productRepository.save(product);
 
-            productRepository.save(product);
-
+                return responsePayloadUtility.buildResponse(
+                        ProductConstant.UPDATE_PRODUCT_DETAILS_SUCCESSFUL,
+                        HttpStatus.OK,
+                        null,
+                        null
+                );
+            } else  {
             return responsePayloadUtility.buildResponse(
-                    ProductConstant.UPDATE_PRODUCT_DETAILS_SUCCESSFUL,
-                    HttpStatus.OK,
+                    ProductConstant.UPDATE_PRODUCT_DETAILS_FAIL,
+                    HttpStatus.UNAUTHORIZED,
                     null,
-                    null
+                    ProductConstant.UPDATE_PRODUCT_DETAILS_FAIL
             );
     }
-
+}
     @Override
     @Transactional
     public ResponsePayload updateProductBrand(UpdateProductBrandRequest request) {

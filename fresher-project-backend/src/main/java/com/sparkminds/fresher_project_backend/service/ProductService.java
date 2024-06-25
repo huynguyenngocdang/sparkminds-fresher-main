@@ -15,9 +15,6 @@ import com.sparkminds.fresher_project_backend.payload.ResponsePayload;
 public interface ProductService {
     ResponsePayload createNewProduct(CreateProductRequest request);
     ResponsePayload searchProducts(SearchProductsRequest request);
-    ResponsePayload searchProductsByName(SearchProductByNameRequest request);
-    ResponsePayload searchProductByPrice(SearchProductByPriceRangeRequest request);
-    ResponsePayload searchProductByCategory(SearchProductByCategoryRequest request);
     ResponsePayload hardDeleteProductById(DeleteProductRequest request);
     ResponsePayload softDeleteProductById(DeleteProductRequest request);
     ResponsePayload softRestoreProductById(RestoreProductRequest request);

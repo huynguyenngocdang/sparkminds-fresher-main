@@ -1,5 +1,6 @@
 package com.sparkminds.fresher_project_backend.security;
 
+import com.sparkminds.fresher_project_backend.constant.RoleConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +36,10 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/login", "/api/users/register"
                 , "/api/auth/forget-password").anonymous()
                 .requestMatchers(HttpMethod.GET, "/api/products").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/brands").permitAll()
+                .requestMatchers("/api/brands").hasAnyRole(RoleConstant.ROLE_ADMIN, RoleConstant.ROLE_MODERATOR)
+                .requestMatchers(HttpMethod.GET, "/api/categories").permitAll()
+                .requestMatchers("/api/categories").hasAnyRole(RoleConstant.ROLE_ADMIN, RoleConstant.ROLE_MODERATOR)
                 .and()
                 .authorizeHttpRequests().requestMatchers("/api/**")
                 .authenticated()
