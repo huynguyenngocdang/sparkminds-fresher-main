@@ -8,9 +8,6 @@ import com.sparkminds.fresher_project_backend.constant.UserConstant;
 import com.sparkminds.fresher_project_backend.dto.request.CreateProductRequest;
 import com.sparkminds.fresher_project_backend.dto.request.DeleteProductRequest;
 import com.sparkminds.fresher_project_backend.dto.request.RestoreProductRequest;
-import com.sparkminds.fresher_project_backend.dto.request.SearchProductByCategoryRequest;
-import com.sparkminds.fresher_project_backend.dto.request.SearchProductByNameRequest;
-import com.sparkminds.fresher_project_backend.dto.request.SearchProductByPriceRangeRequest;
 import com.sparkminds.fresher_project_backend.dto.request.SearchProductsRequest;
 import com.sparkminds.fresher_project_backend.dto.request.UpdateProductBrandRequest;
 import com.sparkminds.fresher_project_backend.dto.request.UpdateProductCategoryRequest;
@@ -35,6 +32,9 @@ import com.sparkminds.fresher_project_backend.service.ProductService;
 import com.sparkminds.fresher_project_backend.specification.ProductSpecification;
 import com.sparkminds.fresher_project_backend.utility.ResponsePayloadUtility;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -92,7 +92,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ResponsePayload searchProducts(SearchProductsRequest request) {
+    public ResponsePayload searchProducts(SearchProductsRequest request, Pageable pageable) {
 
         String productName = request.getProductName();
         String category = request.getCategory();
@@ -101,12 +101,13 @@ public class ProductServiceImpl implements ProductService {
         Double maxPrice = request.getMaxPrice();
 
         Specification<Product> specification = productSpecification.searchProducts(productName, category, brand, minPrice, maxPrice);
-        List<Product> products = productRepository.findAll(specification);
-        List<SearchProductResponse> productResponses = productMapper.toSearchProductResponseList(products);
+        Page<Product> productsPage = productRepository.findAll(specification, pageable);
+        List<SearchProductResponse> productResponses = productMapper.toSearchProductResponseList(productsPage.getContent());
+        PageImpl<SearchProductResponse> productResponsePage = new PageImpl<>(productResponses, pageable, productResponses.size());
         return responsePayloadUtility.buildResponse(
                 ProductSearchConstant.PRODUCT_SEARCH_SUCCESS,
                 HttpStatus.OK,
-                productResponses,
+                productResponsePage,
                 null
         );
     }

@@ -22,21 +22,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     @Query("SELECT p FROM Product p WHERE p.user = :user")
     List<Product> findAllByUserForWrite(@Param("user") User user);
 
-    @Query("SELECT p FROM Product p WHERE (p.productName LIKE %:query% " +
-            "OR p.category.categoryName LIKE %:query% " +
-            "OR p.brand.brandName LIKE %:query% " +
-            "OR p.user.username LIKE %:query% " +
-            "OR p.user.userProfile.fullName LIKE %:query%) " +
-            "AND p.isDelete = false")
-    List<Product> findProductByProductNameQuery(@Param("query") String query);
-
-    @Query("SELECT p FROM Product p WHERE (:minPrice IS NULL OR p.price >= :minPrice) " +
-            "AND (:maxPrice IS NULL OR p.price <= :maxPrice) AND p.isDelete = false")
-    List<Product> findProductByDynamicPriceRange(@Param("minPrice") Double minPrice, @Param("maxPrice") Double maxPrice);
-
-    @Query("SELECT p FROM Product  p WHERE p.category.id IN :categoryIds AND p.isDelete = false")
-    List<Product> findProductsByCategoryIds(@Param("categoryIds") List<Long> categoryIds);
-
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT p FROM Product p WHERE p.brand = :brand")
     List<Product> findAllByBrandForWrite(@Param("brand") Brand brand);

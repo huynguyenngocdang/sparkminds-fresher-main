@@ -1,11 +1,9 @@
 package com.sparkminds.fresher_project_backend.controller;
 
+import com.sparkminds.fresher_project_backend.constant.PageConstant;
 import com.sparkminds.fresher_project_backend.dto.request.CreateProductRequest;
 import com.sparkminds.fresher_project_backend.dto.request.DeleteProductRequest;
 import com.sparkminds.fresher_project_backend.dto.request.RestoreProductRequest;
-import com.sparkminds.fresher_project_backend.dto.request.SearchProductByCategoryRequest;
-import com.sparkminds.fresher_project_backend.dto.request.SearchProductByNameRequest;
-import com.sparkminds.fresher_project_backend.dto.request.SearchProductByPriceRangeRequest;
 import com.sparkminds.fresher_project_backend.dto.request.SearchProductsRequest;
 import com.sparkminds.fresher_project_backend.dto.request.UpdateProductBrandRequest;
 import com.sparkminds.fresher_project_backend.dto.request.UpdateProductCategoryRequest;
@@ -14,6 +12,9 @@ import com.sparkminds.fresher_project_backend.payload.ResponsePayload;
 import com.sparkminds.fresher_project_backend.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -39,27 +41,17 @@ public class ProductController {
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
     @GetMapping
-    public ResponseEntity<ResponsePayload> searchProduct(@RequestBody SearchProductsRequest request) {
-        ResponsePayload responsePayload = productService.searchProducts(request);
+    public ResponseEntity<ResponsePayload> searchProduct(@RequestBody SearchProductsRequest request,
+                                                         @RequestParam(defaultValue = PageConstant.PAGE_NUMBER_DEFAULT) int page,
+                                                         @RequestParam(defaultValue = PageConstant.PAGE_SIZE_DEFAULT) int size,
+                                                         @RequestParam(defaultValue = PageConstant.SORT_BY_DEFAULT) String sortBy,
+                                                         @RequestParam(defaultValue = PageConstant.SORT_BY_DIRECTION_DEFAULT_ASC) String sortDirection) {
+        Sort.Direction direction = sortDirection.equalsIgnoreCase(PageConstant.SORT_BY_DIRECTION_DEFAULT_ASC) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+        ResponsePayload responsePayload = productService.searchProducts(request, pageable);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
 
-//    @GetMapping("/search")
-//    public ResponseEntity<ResponsePayload> searchProductByName(@RequestBody @Valid SearchProductByNameRequest request) {
-//        ResponsePayload responsePayload = productService.searchProductsByName(request);
-//        return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
-//    }
-//
-//    @GetMapping("/price")
-//    public ResponseEntity<ResponsePayload> searchProductByPrice(@RequestBody @Valid SearchProductByPriceRangeRequest request) {
-//        ResponsePayload responsePayload = productService.searchProductByPrice(request);
-//        return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
-//    }
-//    @GetMapping("/categories")
-//    public ResponseEntity<ResponsePayload> searchProductByCategory(@RequestBody @Valid SearchProductByCategoryRequest request) {
-//        ResponsePayload responsePayload = productService.searchProductByCategory(request);
-//        return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
-//    }
     @PutMapping
     public ResponseEntity<ResponsePayload> updateProductDetails(@RequestBody @Valid UpdateProductDetailsRequest request) {
         ResponsePayload responsePayload = productService.updateProductDetails(request);
