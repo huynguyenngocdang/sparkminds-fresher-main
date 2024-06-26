@@ -2,6 +2,7 @@ package com.sparkminds.fresher_project_backend.service.impl;
 
 import com.sparkminds.fresher_project_backend.constant.ProductConstant;
 import com.sparkminds.fresher_project_backend.constant.RoleConstant;
+import com.sparkminds.fresher_project_backend.constant.UserConstant;
 import com.sparkminds.fresher_project_backend.dto.request.LoginRequest;
 import com.sparkminds.fresher_project_backend.dto.response.LoginResponse;
 import com.sparkminds.fresher_project_backend.dto.response.RoleResponse;
@@ -102,10 +103,24 @@ public class AuthServiceImpl implements AuthService {
         return product.getUser().getUsername().equals(authentication.getName()) || isAdminOrModerator();
     }
     @Override
+    public boolean isValidUserId(Long userId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findUserByUsername(authentication.getName())
+                .orElseThrow(() -> new ResourceNotFoundException(UserConstant.INVALID_USER_NOT_EXIST + " userId: " + userId ));
+        return user.getId().equals(userId) || isAdmin();
+    }
+    @Override
     public boolean isAdminOrModerator() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getAuthorities().stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_" + RoleConstant.ROLE_ADMIN) ||
                         grantedAuthority.getAuthority().equals("ROLE_" + RoleConstant.ROLE_MODERATOR));
+    }
+
+    @Override
+    public boolean isAdmin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_" + RoleConstant.ROLE_ADMIN));
     }
 }

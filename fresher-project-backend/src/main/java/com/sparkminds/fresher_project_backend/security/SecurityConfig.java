@@ -1,10 +1,15 @@
 package com.sparkminds.fresher_project_backend.security;
 
+import com.sparkminds.fresher_project_backend.constant.CommonErrorConstant;
 import com.sparkminds.fresher_project_backend.constant.RoleConstant;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -13,33 +18,49 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+
     @Autowired
     private JwtAuthFilter jwtAuthFilter;
+    @Autowired
+    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    @Autowired
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
+
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
     }
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
+                .exceptionHandling()
+                    .authenticationEntryPoint(customAuthenticationEntryPoint)
+                    .accessDeniedHandler(customAccessDeniedHandler)
+                .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/auth/login", "/api/users/register"
-                , "/api/auth/forget-password").anonymous()
-                .requestMatchers(HttpMethod.GET, "/api/products").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/brands").permitAll()
-                .requestMatchers("/api/brands").hasAnyRole(RoleConstant.ROLE_ADMIN, RoleConstant.ROLE_MODERATOR)
-                .requestMatchers(HttpMethod.GET, "/api/categories").permitAll()
-                .requestMatchers("/api/categories").hasAnyRole(RoleConstant.ROLE_ADMIN, RoleConstant.ROLE_MODERATOR)
+                    .requestMatchers("/api/auth/login", "/api/users/register"
+                        , "/api/auth/forget-password").anonymous()
+                    .requestMatchers(HttpMethod.GET, "/api/products").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/brands").permitAll()
+                    .requestMatchers("/api/brands").hasAnyRole(RoleConstant.ROLE_ADMIN, RoleConstant.ROLE_MODERATOR)
+                    .requestMatchers(HttpMethod.GET, "/api/categories").permitAll()
+                    .requestMatchers("/api/categories").hasAnyRole(RoleConstant.ROLE_ADMIN, RoleConstant.ROLE_MODERATOR)
                 .and()
                 .authorizeHttpRequests().requestMatchers("/api/**")
                 .authenticated()
@@ -51,10 +72,12 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -62,6 +85,7 @@ public class SecurityConfig {
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();

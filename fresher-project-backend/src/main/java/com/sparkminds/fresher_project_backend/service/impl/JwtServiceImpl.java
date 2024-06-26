@@ -21,6 +21,7 @@ import java.util.function.Function;
 
 @Service
 public class JwtServiceImpl implements JwtService {
+    //refractor lai vao .env va applications.yml
     public static final String SECRET = "6A4D2B5E3F1A4857295C6E3D4F56783241796B3C554D676E";
     private final UserRepository userRepository;
     public JwtServiceImpl(UserRepository userRepository) {
@@ -73,6 +74,9 @@ public class JwtServiceImpl implements JwtService {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, username);
     }
+    // tao session trong claim khi login
+    // khi logout thi de session expire = 1
+    // luu lai trong database redis
     private String createToken(Map<String, Object> claims, String username) {
         return Jwts.builder()
                 .setClaims(claims)

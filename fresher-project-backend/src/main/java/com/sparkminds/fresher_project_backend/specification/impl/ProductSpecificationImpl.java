@@ -14,6 +14,7 @@ import java.util.List;
 @Component
 public class ProductSpecificationImpl implements ProductSpecification {
     @Override
+    // edit specification cho them common, vi du search category list thay vi search 1 category
     public Specification<Product> searchProducts(String productName, String category, String brand, Double minPrice, Double maxPrice) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();

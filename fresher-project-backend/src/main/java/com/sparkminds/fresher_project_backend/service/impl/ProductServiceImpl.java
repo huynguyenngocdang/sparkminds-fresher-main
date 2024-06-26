@@ -103,7 +103,7 @@ public class ProductServiceImpl implements ProductService {
         Specification<Product> specification = productSpecification.searchProducts(productName, category, brand, minPrice, maxPrice);
         Page<Product> productsPage = productRepository.findAll(specification, pageable);
         List<SearchProductResponse> productResponses = productMapper.toSearchProductResponseList(productsPage.getContent());
-        PageImpl<SearchProductResponse> productResponsePage = new PageImpl<>(productResponses, pageable, productResponses.size());
+        Page<SearchProductResponse> productResponsePage = new PageImpl<>(productResponses, pageable, productsPage.getTotalElements());
         return responsePayloadUtility.buildResponse(
                 ProductSearchConstant.PRODUCT_SEARCH_SUCCESS,
                 HttpStatus.OK,
@@ -186,7 +186,6 @@ public class ProductServiceImpl implements ProductService {
                 product.setPrice(request.getPrice());
                 product.setQuantity(request.getQuantity());
 
-                productRepository.save(product);
 
                 return responsePayloadUtility.buildResponse(
                         ProductConstant.UPDATE_PRODUCT_DETAILS_SUCCESSFUL,

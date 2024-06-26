@@ -41,7 +41,7 @@ public class ProductController {
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
     @GetMapping
-    public ResponseEntity<ResponsePayload> searchProduct(@RequestBody SearchProductsRequest request,
+    public ResponseEntity<ResponsePayload> searchProduct(@RequestBody @Valid SearchProductsRequest request,
                                                          @RequestParam(defaultValue = PageConstant.PAGE_NUMBER_DEFAULT) int page,
                                                          @RequestParam(defaultValue = PageConstant.PAGE_SIZE_DEFAULT) int size,
                                                          @RequestParam(defaultValue = PageConstant.SORT_BY_DEFAULT) String sortBy,

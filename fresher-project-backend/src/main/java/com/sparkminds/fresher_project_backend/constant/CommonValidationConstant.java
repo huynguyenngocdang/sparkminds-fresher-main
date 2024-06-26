@@ -7,6 +7,5 @@ public class CommonValidationConstant extends CommonConstant{
     public static final String VALIDATION_FAIL_NOT_EMPTY = "should not be empty";
     public static final String VALIDATION_FAIL_GREATER_0 = "should be greater than 0";
     public static final int VALID_USER_AGE = 18;
-
-
+    public static final String FIELD_COMPARISON_FAILED = "Field comparison validation failed";
 }

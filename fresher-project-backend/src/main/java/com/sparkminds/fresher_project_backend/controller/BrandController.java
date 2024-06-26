@@ -40,6 +40,7 @@ public class BrandController {
         ResponsePayload responsePayload = brandService.hardDeleteBrandById(request);
         return new ResponseEntity<>(responsePayload, responsePayload.getStatus());
     }
+    //nhung cai nao co id roi thi de vao pathvariable {id}
     @DeleteMapping
     public ResponseEntity<ResponsePayload> softDeleteBrand(@RequestBody @Valid DeleteBrandRequest request) {
         ResponsePayload responsePayload = brandService.softDeleteBrandById(request);

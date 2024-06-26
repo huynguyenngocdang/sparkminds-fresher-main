@@ -8,5 +8,8 @@ public interface AuthService {
     ResponsePayload login(LoginRequest request);
     boolean isUserNotDelete(String username);
     boolean isProductOwnByUser(Long productId);
+    boolean isValidUserId(Long userId);
+    boolean isAdmin();
     boolean isAdminOrModerator();
+
 }

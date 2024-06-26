@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,11 +24,21 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ResponsePayload> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
+//        ex.getBindingResult().getAllErrors().forEach((error) -> {
+//            String fieldName = ((FieldError) error).getField();
+//            String errorMessage = error.getDefaultMessage();
+//            errors.put(fieldName, errorMessage);
+//        });
+        for (ObjectError error : ex.getBindingResult().getAllErrors()) {
+            String fieldName;
             String errorMessage = error.getDefaultMessage();
+            if (error instanceof FieldError) {
+                fieldName = ((FieldError) error).getField();
+            } else {
+                fieldName = error.getObjectName();
+            }
             errors.put(fieldName, errorMessage);
-        });
+        }
         ResponsePayload responsePayload = responsePayloadUtility.buildResponse(
                 CommonValidationConstant.VALIDATION_EXCEPTION,
                 HttpStatus.BAD_REQUEST,

@@ -125,6 +125,7 @@ public class UserServiceImpl implements UserService {
         user.setDelete(true);
         userProfile.setDelete(true);
         userRoles.forEach(userRole -> userRole.setIsDelete(true));
+
         if (products != null && !products.isEmpty()) {
             products.forEach(product -> product.setDelete(true));
         }

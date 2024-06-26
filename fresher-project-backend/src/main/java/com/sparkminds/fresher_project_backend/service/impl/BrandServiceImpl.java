@@ -116,7 +116,6 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     @Transactional
-    //nghien cuu cach lock record.
     public ResponsePayload updateBrandName(UpdateBrandNameRequest request) {
         Brand brand = brandRepository.findByIdForWrite(request.getBrandId())
                 .orElseThrow(() -> new ResourceNotFoundException(BrandConstant.INVALID_BRAND_NOT_EXIST + " id: " + request.getBrandId()));
