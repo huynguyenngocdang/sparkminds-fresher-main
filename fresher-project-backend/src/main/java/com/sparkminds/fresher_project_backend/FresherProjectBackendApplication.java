@@ -14,7 +14,7 @@ public class FresherProjectBackendApplication {
 		System.setProperty("DB_URL", Objects.requireNonNull(dotenv.get("DB_URL")));
 		System.setProperty("DB_USERNAME", Objects.requireNonNull(dotenv.get("DB_USERNAME")));
 		System.setProperty("DB_PASSWORD", Objects.requireNonNull(dotenv.get("DB_PASSWORD")));
-
+		System.setProperty("SECRET_KEY", Objects.requireNonNull(dotenv.get("SECRET_KEY")));
 		SpringApplication.run(FresherProjectBackendApplication.class, args);
 	}
 }

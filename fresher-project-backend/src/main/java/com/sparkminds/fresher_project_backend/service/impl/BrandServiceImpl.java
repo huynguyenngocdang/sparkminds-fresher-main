@@ -6,9 +6,11 @@ import com.sparkminds.fresher_project_backend.dto.request.CreateBrandRequest;
 import com.sparkminds.fresher_project_backend.dto.request.DeleteBrandRequest;
 import com.sparkminds.fresher_project_backend.dto.request.RestoreBrandRequest;
 import com.sparkminds.fresher_project_backend.dto.request.UpdateBrandNameRequest;
+import com.sparkminds.fresher_project_backend.dto.response.BrandResponse;
 import com.sparkminds.fresher_project_backend.entity.Brand;
 import com.sparkminds.fresher_project_backend.entity.Product;
 import com.sparkminds.fresher_project_backend.exception.ResourceNotFoundException;
+import com.sparkminds.fresher_project_backend.mapper.BrandMapper;
 import com.sparkminds.fresher_project_backend.payload.ResponsePayload;
 import com.sparkminds.fresher_project_backend.repository.BrandRepository;
 import com.sparkminds.fresher_project_backend.repository.ProductRepository;
@@ -29,6 +31,7 @@ public class BrandServiceImpl implements BrandService {
     private final ResponsePayloadUtility responsePayloadUtility;
     private final BrandRepository brandRepository;
     private final ProductRepository productRepository;
+    private final BrandMapper brandMapper;
 
     @Override
     @Transactional
@@ -45,11 +48,12 @@ public class BrandServiceImpl implements BrandService {
         Brand brand = Brand.builder()
                 .brandName(request.getName())
                 .build();
-        brandRepository.save(brand);
+        Brand bradNew =  brandRepository.save(brand);
+        BrandResponse brandResponse = brandMapper.toBrandResponse(bradNew);
         return responsePayloadUtility.buildResponse(
                 BrandConstant.CREATE_BRAND_SUCCESSFUL,
                 HttpStatus.CREATED,
-                null,
+                brandResponse,
                 null
         );
     }
@@ -57,7 +61,6 @@ public class BrandServiceImpl implements BrandService {
     @Override
     @Transactional
     public ResponsePayload hardDeleteBrandById(DeleteBrandRequest request) {
-
         Brand brand = brandRepository.findByIdForWrite(request.getBrandId())
                 .orElseThrow(() -> new ResourceNotFoundException(BrandConstant.INVALID_BRAND_NOT_EXIST + " brandId: " + request.getBrandId()));
 
@@ -89,12 +92,13 @@ public class BrandServiceImpl implements BrandService {
         Brand brandDefault = brandRepository.findByBrandNameForWrite(CommonConstant.NOT_ASSIGN)
                 .orElseThrow(() -> new ResourceNotFoundException(BrandConstant.INVALID_BRAND_NOT_EXIST + " brandName: " + CommonConstant.NOT_ASSIGN));
         products.forEach(product -> product.setBrand(brandDefault));
-        brandRepository.save(brand);
+        Brand brandDelete = brandRepository.save(brand);
+        BrandResponse brandResponse = brandMapper.toBrandResponse(brandDelete);
         productRepository.saveAll(products);
         return responsePayloadUtility.buildResponse(
                 BrandConstant.SOFT_DELETE_BRAND_SUCCESSFUL,
                 HttpStatus.OK,
-                null,
+                brandResponse,
                 null
         );
     }

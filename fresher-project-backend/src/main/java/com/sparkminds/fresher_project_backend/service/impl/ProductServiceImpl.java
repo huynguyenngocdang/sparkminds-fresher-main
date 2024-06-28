@@ -2,6 +2,7 @@ package com.sparkminds.fresher_project_backend.service.impl;
 
 import com.sparkminds.fresher_project_backend.constant.BrandConstant;
 import com.sparkminds.fresher_project_backend.constant.CategoryConstant;
+import com.sparkminds.fresher_project_backend.constant.CommonErrorConstant;
 import com.sparkminds.fresher_project_backend.constant.ProductConstant;
 import com.sparkminds.fresher_project_backend.constant.ProductSearchConstant;
 import com.sparkminds.fresher_project_backend.constant.UserConstant;
@@ -141,13 +142,22 @@ public class ProductServiceImpl implements ProductService {
 
             Product product = productRepository.findById(request.getProductId())
                     .orElseThrow(() -> new ResourceNotFoundException(ProductConstant.INVALID_PRODUCT_NOT_EXIST + " productId: " + request.getProductId()));
-            product.setDelete(true);
-            return responsePayloadUtility.buildResponse(
-                    ProductConstant.SOFT_DELETE_PRODUCT_SUCCESSFUL,
-                    HttpStatus.OK,
-                    null,
-                    null
-            );
+            if(authService.isProductOwnByUser(product.getId())) {
+                product.setDelete(true);
+                return responsePayloadUtility.buildResponse(
+                        ProductConstant.SOFT_DELETE_PRODUCT_SUCCESSFUL,
+                        HttpStatus.OK,
+                        null,
+                        null
+                );
+            } else {
+                return responsePayloadUtility.buildResponse(
+                        ProductConstant.SOFT_DELETE_PRODUCT_FAIL,
+                        HttpStatus.UNAUTHORIZED,
+                        null,
+                        CommonErrorConstant.RESPONSE_ACCESS_DENIED
+                );
+            }
     }
 
     @Override
